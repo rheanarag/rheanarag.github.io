@@ -59,7 +59,7 @@
     </script>
     
     <!-- Custom Pastel Design System Stylesheet -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=2.2">
 </head>
 <body class="text-slate-800 dark:text-slate-100 selection:bg-pink-200 selection:text-pink-900 transition-colors duration-400 relative min-h-screen">
 
@@ -353,20 +353,20 @@
 
             <!-- Top Anchor Point Mount -->
             <div id="lanyard-anchor-mount" class="absolute pointer-events-none -translate-x-1/2 flex flex-col items-center z-30">
-                <div class="w-12 h-3.5 bg-gradient-to-r from-pink-200 via-rose-100 to-pink-300 rounded-b-lg shadow-md border-b border-pink-400/40"></div>
-                <div class="w-6 h-2 bg-slate-300/60 rounded-b-sm"></div>
+                <div class="w-16 h-3 bg-gradient-to-r from-pink-200 via-rose-100 to-pink-300 rounded-b-lg shadow-md border-b border-pink-400/40"></div>
+                <div class="w-7 h-2 bg-slate-300/70 rounded-b-sm"></div>
             </div>
 
             <!-- Hanging Badge Physical Entity (Draggable & Physics-Driven) -->
-            <div id="hanging-badge" class="absolute pointer-events-auto cursor-grab select-none touch-none z-30" style="will-change: transform;">
+            <div id="hanging-badge" class="absolute pointer-events-auto cursor-grab select-none touch-none z-30" style="will-change: transform;" draggable="false">
                 <!-- Metal Clip Assembly -->
-                <div class="id-clip-assembly flex flex-col items-center">
+                <div class="id-clip-assembly flex flex-col items-center pointer-events-none select-none">
                     <div class="id-metal-clasp"></div>
                     <div class="id-metal-ring"></div>
                 </div>
 
                 <!-- Acrylic Badge Outer Sleeve -->
-                <div class="id-acrylic-holder relative rounded-3xl p-3 sm:p-3.5 shadow-xl backdrop-blur-md">
+                <div class="id-acrylic-holder relative rounded-3xl p-3 sm:p-3.5 shadow-xl backdrop-blur-md pointer-events-none select-none">
                     <!-- Top Slot Hole -->
                     <div class="id-slot-hole"></div>
 
@@ -374,19 +374,19 @@
                     <div class="id-glare-overlay absolute inset-0 rounded-3xl pointer-events-none overflow-hidden z-20"></div>
 
                     <!-- Physical ID Card Surface (Photo + Cursive Name) -->
-                    <div class="id-card-surface rounded-2xl overflow-hidden p-3 sm:p-3.5 flex flex-col justify-between relative shadow-md">
+                    <div class="id-card-surface rounded-2xl overflow-hidden p-3 sm:p-3.5 flex flex-col justify-between relative shadow-md pointer-events-none select-none">
                         
                         <!-- 1. Portrait Photo -->
-                        <div class="relative w-full aspect-[4/4.7] rounded-xl sm:rounded-2xl overflow-hidden bg-pink-50 shadow-sm border border-pink-100">
-                            <img src="images/rhea-about.jpg" alt="Rhea Mae Narag" class="w-full h-full object-cover object-center" onerror="this.src='images/rhea-photo.jpg'">
+                        <div class="relative w-full aspect-[4/4.7] rounded-xl sm:rounded-2xl overflow-hidden bg-pink-50 shadow-sm border border-pink-100 pointer-events-none select-none">
+                            <img src="images/rhea-about.jpg" alt="Rhea Mae Narag" class="w-full h-full object-cover object-center pointer-events-none select-none" draggable="false" onerror="this.src='images/rhea-photo.jpg'">
                         </div>
 
                         <!-- 2. Personal Name (Cursive Font) -->
-                        <div class="pt-3 pb-1 flex flex-col items-center justify-center">
-                            <h3 class="font-serif italic font-semibold text-2xl sm:text-3xl text-pink-600 dark:text-pink-400 tracking-wide text-center leading-tight select-none">
+                        <div class="pt-3 pb-1 flex flex-col items-center justify-center pointer-events-none select-none">
+                            <h3 class="font-serif italic font-semibold text-2xl sm:text-3xl text-pink-600 dark:text-pink-400 tracking-wide text-center leading-tight select-none pointer-events-none">
                                 Rhea Mae Narag
                             </h3>
-                            <span class="text-[11px] font-mono text-slate-500 dark:text-slate-400 mt-0.5">Polytechnic University of the Philippines</span>
+                            <span class="text-[11px] font-mono text-slate-500 dark:text-slate-400 mt-0.5 select-none pointer-events-none">Polytechnic University of the Philippines</span>
                         </div>
 
                     </div>
@@ -1218,6 +1218,6 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     
     <!-- Core Portfolio Interactions -->
-    <script src="js/script.js"></script>
+    <script src="js/script.js?v=2.2"></script>
 </body>
 </html>

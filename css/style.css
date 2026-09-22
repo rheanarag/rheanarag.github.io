@@ -227,8 +227,7 @@ html.dark .aesthetic-bg-pattern {
   body.custom-cursor-active select,
   body.custom-cursor-active label,
   body.custom-cursor-active [role="button"],
-  body.custom-cursor-active .tilt-card,
-  body.custom-cursor-active #hanging-badge {
+  body.custom-cursor-active .tilt-card {
     cursor: none !important;
   }
 }
@@ -702,13 +701,20 @@ html.dark .swiper-slide-active .glass-card {
   transform-origin: 50% 0px;
   cursor: grab;
   cursor: -webkit-grab;
-  touch-action: pan-y;
+  touch-action: none !important;
   user-select: none;
   -webkit-user-select: none;
+  -webkit-user-drag: none;
   pointer-events: auto;
   z-index: 37;
   transform-style: preserve-3d;
   transition: filter 0.2s ease;
+}
+
+#hanging-badge * {
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 #hanging-badge:hover {
@@ -717,8 +723,8 @@ html.dark .swiper-slide-active .glass-card {
 
 #hanging-badge:active,
 #hanging-badge.is-dragging {
-  cursor: grabbing;
-  cursor: -webkit-grabbing;
+  cursor: grabbing !important;
+  cursor: -webkit-grabbing !important;
 }
 
 /* Metal Clip & Swivel Clasp */

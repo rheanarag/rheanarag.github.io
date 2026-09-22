@@ -842,12 +842,11 @@ Welcome to Rhea's digital matrix.
             ease: 'power3.out'
         });
 
-        // Hero 3D Card Elastic Drop
+        // Hero 3D Card Area Reveal
         tl.from('.gsap-hero-right', {
-            scale: 0.92,
             opacity: 0,
-            duration: 0.9,
-            ease: 'back.out(1.4)'
+            duration: 0.8,
+            ease: 'power2.out'
         }, '-=0.5');
 
         // Scroll Reveals for Sections
@@ -990,12 +989,11 @@ Welcome to Rhea's digital matrix.
                 if (isDesktop) {
                     anchorX = Math.max(width * 0.52, Math.min(width - 170, targetX));
                     anchorY = 0;
-                    restLength = Math.min(160, Math.max(115, height * 0.16));
+                    restLength = Math.min(160, Math.max(120, height * 0.16));
                 } else {
-                    // Mobile & Tablet: position anchor cleanly centered in the dedicated hero-right column
-                    anchorX = targetX;
-                    anchorY = Math.max(0, rightCardRect.top - containerRect.top + 8);
-                    restLength = isTablet ? 85 : 68;
+                    anchorX = targetX || (width * 0.5);
+                    anchorY = Math.max(0, rightCardRect.top - containerRect.top + 6);
+                    restLength = isTablet ? 75 : 55;
                 }
             } else {
                 anchorX = width * 0.5;
@@ -1048,6 +1046,9 @@ Welcome to Rhea's digital matrix.
         const onPointerDown = (e) => {
             if (e.button !== undefined && e.button !== 0) return; // Left click only
 
+            // Block browser default image dragging and touch scrolling on the ID badge
+            if (e.cancelable) e.preventDefault();
+
             const coords = getContainerCoords(e);
             pointerPos = coords;
             startPointer = { x: coords.x, y: coords.y };
@@ -1062,51 +1063,32 @@ Welcome to Rhea's digital matrix.
             };
 
             isPointerActive = true;
+            isDragging = true;
+            badge.classList.add('is-dragging');
+
+            if (badge.setPointerCapture && e.pointerId !== undefined) {
+                try {
+                    badge.setPointerCapture(e.pointerId);
+                } catch (_) {}
+            }
+
             pointerHistory = [{ x: coords.x, y: coords.y, time: performance.now() }];
 
-            // Mouse triggers immediately; touch waits for slight threshold to not freeze vertical page scroll
-            if (e.pointerType !== 'touch') {
-                isDragging = true;
-                if (badge.setPointerCapture && e.pointerId) {
-                    try { badge.setPointerCapture(e.pointerId); } catch (_) {}
-                }
-                badge.classList.add('is-dragging');
-
-                if (!hasInteracted && dragHint) {
-                    hasInteracted = true;
-                    dragHint.style.opacity = '0';
-                    setTimeout(() => dragHint.remove(), 600);
-                }
+            if (!hasInteracted && dragHint) {
+                hasInteracted = true;
+                dragHint.style.opacity = '0';
+                setTimeout(() => {
+                    if (dragHint && dragHint.parentNode) dragHint.remove();
+                }, 600);
             }
         };
 
         const onPointerMove = (e) => {
-            if (!isPointerActive) return;
+            if (!isDragging) return;
+            if (e.cancelable) e.preventDefault();
+
             const coords = getContainerCoords(e);
             pointerPos = coords;
-
-            if (!isDragging && e.pointerType === 'touch') {
-                const dx = coords.x - startPointer.x;
-                const dy = coords.y - startPointer.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist > 8) {
-                    isDragging = true;
-                    if (badge.setPointerCapture && e.pointerId) {
-                        try { badge.setPointerCapture(e.pointerId); } catch (_) {}
-                    }
-                    badge.classList.add('is-dragging');
-
-                    if (!hasInteracted && dragHint) {
-                        hasInteracted = true;
-                        dragHint.style.opacity = '0';
-                        setTimeout(() => dragHint.remove(), 600);
-                    }
-                } else {
-                    return;
-                }
-            }
-
-            if (!isDragging) return;
 
             const now = performance.now();
             pointerHistory.push({ x: coords.x, y: coords.y, time: now });
@@ -1116,54 +1098,56 @@ Welcome to Rhea's digital matrix.
         };
 
         const onPointerUp = (e) => {
-            if (!isPointerActive) return;
+            if (!isPointerActive && !isDragging) return;
             isPointerActive = false;
 
             if (isDragging) {
                 isDragging = false;
                 badge.classList.remove('is-dragging');
 
-                if (badge.releasePointerCapture && e.pointerId) {
-                    try { badge.releasePointerCapture(e.pointerId); } catch (_) {}
+                if (badge.releasePointerCapture && e.pointerId !== undefined) {
+                    try {
+                        badge.releasePointerCapture(e.pointerId);
+                    } catch (_) {}
                 }
 
-            // Calculate release velocity from rolling pointer history
-            const now = performance.now();
-            let vx = 0;
-            let vy = 0;
+                // Calculate release velocity from rolling pointer history
+                const now = performance.now();
+                let vx = 0;
+                let vy = 0;
 
-            if (pointerHistory.length >= 2) {
-                const oldest = pointerHistory[0];
-                const dt = (now - oldest.time) / 1000;
-                if (dt > 0.01 && dt < 0.3) {
-                    vx = (pointerPos.x - oldest.x) / dt;
-                    vy = (pointerPos.y - oldest.y) / dt;
+                if (pointerHistory.length >= 2) {
+                    const oldest = pointerHistory[0];
+                    const dt = (now - oldest.time) / 1000;
+                    if (dt > 0.01 && dt < 0.3) {
+                        vx = (pointerPos.x - oldest.x) / dt;
+                        vy = (pointerPos.y - oldest.y) / dt;
+                    }
                 }
+
+                // Convert Cartesian velocity to Pendulum polar coordinates
+                const cosT = Math.cos(theta);
+                const sinT = Math.sin(theta);
+                const r = Math.max(60, currentLength);
+
+                // Tangential angular impulse (omega = (vx*cos(theta) - vy*sin(theta)) / r)
+                const tangentialV = (vx * cosT - vy * sinT);
+                omega = tangentialV / r;
+                omega = Math.max(-9, Math.min(9, omega));
+
+                // Radial velocity impulse
+                lengthVelocity = (vx * sinT + vy * cosT) * 0.4;
+                lengthVelocity = Math.max(-400, Math.min(400, lengthVelocity));
+
+                // Yaw twist impulse from horizontal throw
+                twistVel = -vx * 0.08;
+                twistVel = Math.max(-120, Math.min(120, twistVel));
             }
-
-            // Convert Cartesian velocity to Pendulum polar coordinates
-            const cosT = Math.cos(theta);
-            const sinT = Math.sin(theta);
-            const r = Math.max(60, currentLength);
-
-            // Tangential angular impulse (omega = (vx*cos(theta) - vy*sin(theta)) / r)
-            const tangentialV = (vx * cosT - vy * sinT);
-            omega = tangentialV / r;
-
-            // Clamp max initial angular speed for smooth believable swings
-            omega = Math.max(-9, Math.min(9, omega));
-
-            // Radial velocity impulse
-            lengthVelocity = (vx * sinT + vy * cosT) * 0.4;
-
-            // Yaw twist impulse from horizontal throw
-            twistVel = -vx * 0.08;
-            twistVel = Math.max(-120, Math.min(120, twistVel));
-        }
-    };
+        };
 
         badge.addEventListener('pointerdown', onPointerDown);
-        window.addEventListener('pointermove', onPointerMove, { passive: true });
+        badge.addEventListener('dragstart', (e) => e.preventDefault());
+        window.addEventListener('pointermove', onPointerMove, { passive: false });
         window.addEventListener('pointerup', onPointerUp, { passive: true });
         window.addEventListener('pointercancel', onPointerUp, { passive: true });
 
