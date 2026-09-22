@@ -350,38 +350,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ==========================================================================
-    // 7. INTERACTIVE SKILLS FILTER
-    // ==========================================================================
-    const filterTabs = document.querySelectorAll('.filter-tab');
-    const skillCards = document.querySelectorAll('.skill-card');
-
-    filterTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            const filter = tab.getAttribute('data-filter');
-
-            // Update tab UI
-            filterTabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-
-            // Filter cards with smooth scale
-            skillCards.forEach(card => {
-                const category = card.getAttribute('data-category');
-                if (filter === 'all' || category === filter) {
-                    card.style.display = 'block';
-                    if (typeof gsap !== 'undefined') {
-                        gsap.fromTo(card, { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'power2.out' });
-                    }
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-
-            if (typeof ScrollTrigger !== 'undefined') {
-                setTimeout(() => ScrollTrigger.refresh(), 360);
-            }
-        });
-    });
 
     // ==========================================================================
     // 8. RESUME MODAL & DOWNLOAD
@@ -930,6 +898,7 @@ Welcome to Rhea's digital matrix.
     const initHangingBadge = () => {
         const container = document.getElementById('hanging-id-container');
         const badge = document.getElementById('hanging-badge');
+        const cardFlipper = document.getElementById('id-card-flipper');
         const anchorMount = document.getElementById('lanyard-anchor-mount');
         const shadowPath = document.getElementById('lanyard-shadow-path');
         const strapPath = document.getElementById('lanyard-strap-path');
@@ -938,14 +907,13 @@ Welcome to Rhea's digital matrix.
         const glareOverlay = badge ? badge.querySelector('.id-glare-overlay') : null;
         const hologramStrip = badge ? badge.querySelector('.id-hologram-strip') : null;
         const heroSection = document.getElementById('home');
-        const heroRightCard = heroSection ? heroSection.querySelector('.gsap-hero-right') : null;
 
         if (!container || !badge || !anchorMount || !strapPath || !heroSection) return;
 
         // Physical Parameters
         let anchorX = 0;
         let anchorY = 0;
-        let restLength = 135; // Default rest lanyard length in px for enlarged badge
+        let restLength = 100; // Calibrated for responsive ID card container
         let currentLength = restLength;
         let lengthVelocity = 0;
         
@@ -956,17 +924,18 @@ Welcome to Rhea's digital matrix.
         let pitch = 0; // 3D pitch angle in degrees
 
         const gravity = 980; // px/s^2
-        const damping = 0.024; // Natural air resistance & pivot friction
-        const springK = 190; // Radial cord elasticity
-        const springDamp = 14; // Radial damping
-        const twistK = 45; // Yaw spring stiffness
-        const twistDamp = 6.5; // Yaw damping
+        const dampingTheta = 3.0; // Angular damping in 1/s
+        const springK = 180; // Radial cord elasticity
+        const dampingR = 12; // Radial damping
+        const twistK = 42; // Yaw spring stiffness
+        const twistDamp = 8; // Yaw damping
 
         let isDragging = false;
         let isPointerActive = false;
         let isHovered = false;
         let hasInteracted = false;
-        let startPointer = { x: 0, y: 0 };
+        let pointerStart = { clientX: 0, clientY: 0, time: 0 };
+        let activePointerId = null;
         let pointerHistory = [];
         let dragOffset = { x: 0, y: 0 };
         let pointerPos = { x: 0, y: 0 };
@@ -974,34 +943,24 @@ Welcome to Rhea's digital matrix.
         let lastTime = performance.now();
         let isSectionVisible = true;
 
-        // Calculate Responsive Anchor and Resting Position
+        // Calculate Responsive Anchor and Resting Position inside the dedicated container
         const updateAnchorPosition = () => {
             const containerRect = container.getBoundingClientRect();
             const width = containerRect.width;
-            const height = containerRect.height;
             const isDesktop = window.innerWidth >= 1024;
             const isTablet = window.innerWidth >= 640 && window.innerWidth < 1024;
 
-            if (heroRightCard) {
-                const rightCardRect = heroRightCard.getBoundingClientRect();
-                const targetX = (rightCardRect.left - containerRect.left) + rightCardRect.width * 0.5;
+            anchorX = width * 0.5;
+            anchorY = 0; // Exactly at the top mount fixture of the container
 
-                if (isDesktop) {
-                    anchorX = Math.max(width * 0.52, Math.min(width - 170, targetX));
-                    anchorY = 0;
-                    restLength = Math.min(160, Math.max(120, height * 0.16));
-                } else {
-                    anchorX = targetX || (width * 0.5);
-                    anchorY = Math.max(0, rightCardRect.top - containerRect.top + 6);
-                    restLength = isTablet ? 75 : 55;
-                }
+            if (isDesktop) {
+                restLength = 100;
+            } else if (isTablet) {
+                restLength = 76;
             } else {
-                anchorX = width * 0.5;
-                anchorY = 0;
-                restLength = 80;
+                restLength = 52;
             }
 
-            // Update top mounting bracket position
             if (anchorMount) {
                 anchorMount.style.left = `${anchorX}px`;
                 anchorMount.style.top = `${anchorY}px`;
@@ -1016,7 +975,7 @@ Welcome to Rhea's digital matrix.
                 ScrollTrigger.refresh();
             }
         });
-        setTimeout(updateAnchorPosition, 350);
+        setTimeout(updateAnchorPosition, 250);
 
         // Visibility Observer to pause physics when offscreen
         if ('IntersectionObserver' in window) {
@@ -1034,26 +993,31 @@ Welcome to Rhea's digital matrix.
         // Pointer Event Coordinates Relative to Container
         const getContainerCoords = (e) => {
             const rect = container.getBoundingClientRect();
-            const clientX = e.clientX ?? (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
-            const clientY = e.clientY ?? (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
+            const clientX = e.clientX !== undefined ? e.clientX : (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+            const clientY = e.clientY !== undefined ? e.clientY : (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
             return {
                 x: clientX - rect.left,
-                y: clientY - rect.top
+                y: clientY - rect.top,
+                clientX,
+                clientY
             };
         };
 
-        // Pointer Interaction Handlers (Mouse + Touch)
+        // Pointer Interaction Handlers (Mouse + Touch + Pen)
         const onPointerDown = (e) => {
             if (e.button !== undefined && e.button !== 0) return; // Left click only
-
-            // Block browser default image dragging and touch scrolling on the ID badge
             if (e.cancelable) e.preventDefault();
 
             const coords = getContainerCoords(e);
             pointerPos = coords;
-            startPointer = { x: coords.x, y: coords.y };
+            pointerStart = {
+                clientX: coords.clientX,
+                clientY: coords.clientY,
+                time: performance.now()
+            };
+            activePointerId = e.pointerId;
 
-            // Current clip center
+            // Current clip tip in container space
             const clipX = anchorX + currentLength * Math.sin(theta);
             const clipY = anchorY + currentLength * Math.cos(theta);
 
@@ -1063,55 +1027,64 @@ Welcome to Rhea's digital matrix.
             };
 
             isPointerActive = true;
-            isDragging = true;
-            badge.classList.add('is-dragging');
+            isDragging = false; // Distinguish click from drag
+            pointerHistory = [{ x: coords.x, y: coords.y, time: performance.now() }];
 
             if (badge.setPointerCapture && e.pointerId !== undefined) {
                 try {
                     badge.setPointerCapture(e.pointerId);
                 } catch (_) {}
             }
-
-            pointerHistory = [{ x: coords.x, y: coords.y, time: performance.now() }];
-
-            if (!hasInteracted && dragHint) {
-                hasInteracted = true;
-                dragHint.style.opacity = '0';
-                setTimeout(() => {
-                    if (dragHint && dragHint.parentNode) dragHint.remove();
-                }, 600);
-            }
         };
 
         const onPointerMove = (e) => {
-            if (!isDragging) return;
+            if (!isPointerActive) return;
             if (e.cancelable) e.preventDefault();
 
             const coords = getContainerCoords(e);
             pointerPos = coords;
 
-            const now = performance.now();
-            pointerHistory.push({ x: coords.x, y: coords.y, time: now });
-            if (pointerHistory.length > 6) {
-                pointerHistory.shift();
+            const moveDist = Math.hypot(coords.clientX - pointerStart.clientX, coords.clientY - pointerStart.clientY);
+
+            // Small 5px threshold to separate clicks/taps from drags
+            if (!isDragging && moveDist > 5) {
+                isDragging = true;
+                badge.classList.add('is-dragging');
+
+                if (!hasInteracted && dragHint) {
+                    hasInteracted = true;
+                    dragHint.style.opacity = '0';
+                    setTimeout(() => {
+                        if (dragHint && dragHint.parentNode) dragHint.remove();
+                    }, 600);
+                }
+            }
+
+            if (isDragging) {
+                const now = performance.now();
+                pointerHistory.push({ x: coords.x, y: coords.y, time: now });
+                if (pointerHistory.length > 5) {
+                    pointerHistory.shift();
+                }
             }
         };
 
-        const onPointerUp = (e) => {
-            if (!isPointerActive && !isDragging) return;
+        const endDrag = (e) => {
+            if (!isPointerActive) return;
             isPointerActive = false;
+
+            if (activePointerId !== null && badge.releasePointerCapture) {
+                try {
+                    badge.releasePointerCapture(activePointerId);
+                } catch (_) {}
+                activePointerId = null;
+            }
 
             if (isDragging) {
                 isDragging = false;
                 badge.classList.remove('is-dragging');
 
-                if (badge.releasePointerCapture && e.pointerId !== undefined) {
-                    try {
-                        badge.releasePointerCapture(e.pointerId);
-                    } catch (_) {}
-                }
-
-                // Calculate release velocity from rolling pointer history
+                // Calculate release impulse from rolling pointer history
                 const now = performance.now();
                 let vx = 0;
                 let vy = 0;
@@ -1119,45 +1092,68 @@ Welcome to Rhea's digital matrix.
                 if (pointerHistory.length >= 2) {
                     const oldest = pointerHistory[0];
                     const dt = (now - oldest.time) / 1000;
-                    if (dt > 0.01 && dt < 0.3) {
+                    if (dt > 0.01 && dt < 0.25) {
                         vx = (pointerPos.x - oldest.x) / dt;
                         vy = (pointerPos.y - oldest.y) / dt;
                     }
                 }
 
-                // Convert Cartesian velocity to Pendulum polar coordinates
                 const cosT = Math.cos(theta);
                 const sinT = Math.sin(theta);
-                const r = Math.max(60, currentLength);
+                const L = Math.max(50, currentLength);
 
-                // Tangential angular impulse (omega = (vx*cos(theta) - vy*sin(theta)) / r)
+                // Tangential angular impulse (omega = (vx*cosT - vy*sinT) / L)
                 const tangentialV = (vx * cosT - vy * sinT);
-                omega = tangentialV / r;
-                omega = Math.max(-9, Math.min(9, omega));
+                omega = tangentialV / L;
+                omega = Math.max(-4.5, Math.min(4.5, omega));
 
                 // Radial velocity impulse
-                lengthVelocity = (vx * sinT + vy * cosT) * 0.4;
-                lengthVelocity = Math.max(-400, Math.min(400, lengthVelocity));
+                lengthVelocity = (vx * sinT + vy * cosT) * 0.3;
+                lengthVelocity = Math.max(-180, Math.min(180, lengthVelocity));
 
-                // Yaw twist impulse from horizontal throw
-                twistVel = -vx * 0.08;
-                twistVel = Math.max(-120, Math.min(120, twistVel));
+                // 3D yaw impulse from horizontal flick
+                twistVel = -vx * 0.05;
+                twistVel = Math.max(-60, Math.min(60, twistVel));
+            } else {
+                // Click / Tap triggered: Flip the card to show front or back!
+                const duration = performance.now() - pointerStart.time;
+                if (duration < 450 && cardFlipper) {
+                    cardFlipper.classList.toggle('is-flipped');
+
+                    // Subtle playful impulse on flip
+                    omega += (cardFlipper.classList.contains('is-flipped') ? 0.35 : -0.35);
+                    twistVel += (cardFlipper.classList.contains('is-flipped') ? 22 : -22);
+
+                    if (!hasInteracted && dragHint) {
+                        hasInteracted = true;
+                        dragHint.style.opacity = '0';
+                        setTimeout(() => {
+                            if (dragHint && dragHint.parentNode) dragHint.remove();
+                        }, 600);
+                    }
+                }
             }
         };
 
+        // Attach pointer events to badge & fallback window
         badge.addEventListener('pointerdown', onPointerDown);
+        badge.addEventListener('pointermove', onPointerMove, { passive: false });
+        badge.addEventListener('pointerup', endDrag);
+        badge.addEventListener('pointercancel', endDrag);
+        badge.addEventListener('lostpointercapture', endDrag);
         badge.addEventListener('dragstart', (e) => e.preventDefault());
+
         window.addEventListener('pointermove', onPointerMove, { passive: false });
-        window.addEventListener('pointerup', onPointerUp, { passive: true });
-        window.addEventListener('pointercancel', onPointerUp, { passive: true });
+        window.addEventListener('pointerup', endDrag, { passive: true });
+        window.addEventListener('pointercancel', endDrag, { passive: true });
 
         // Hover Impulse Reactions
         badge.addEventListener('mouseenter', () => {
             isHovered = true;
             if (!isDragging && !prefersReducedMotion) {
-                const nudge = (Math.random() > 0.5 ? 1 : -1) * (0.04 + Math.random() * 0.04);
+                const nudge = (Math.random() > 0.5 ? 1 : -1) * (0.03 + Math.random() * 0.03);
                 omega += nudge;
-                twistVel += nudge * 60;
+                twistVel += nudge * 45;
             }
         });
 
@@ -1171,74 +1167,92 @@ Welcome to Rhea's digital matrix.
 
             if (!isSectionVisible) return;
 
+            // Clamped delta time to guarantee stability across 60Hz, 120Hz, and high-refresh screens
             const dt = Math.min(0.033, Math.max(0.008, (timestamp - lastTime) / 1000));
             lastTime = timestamp;
             const timeSec = timestamp / 1000;
 
             if (isDragging) {
-                // Direct kinematic tracking during drag
+                // Kinematic direct tracking during drag
                 const targetX = pointerPos.x - dragOffset.x;
                 const targetY = pointerPos.y - dragOffset.y;
                 const dx = targetX - anchorX;
-                const dy = targetY - anchorY;
 
-                const targetTheta = Math.atan2(dx, dy);
-                const targetLength = Math.max(40, Math.sqrt(dx * dx + dy * dy));
+                // Cord always hangs downwards from ceiling mount: dy is clamped to >= 20px
+                const dy = Math.max(20, targetY - anchorY);
 
-                // Smooth responsive lerp
-                theta += (targetTheta - theta) * 0.45;
-                currentLength += (targetLength - currentLength) * 0.45;
+                let targetTheta = Math.atan2(dx, dy);
+                // Clamp maximum drag swing angle to +/- 75 degrees (+/- 1.31 rad)
+                targetTheta = Math.max(-1.31, Math.min(1.31, targetTheta));
+
+                const dist = Math.hypot(dx, dy);
+                let targetLength;
+                if (dist > restLength) {
+                    // Elastic cord resistance damping
+                    targetLength = restLength + (dist - restLength) * 0.4;
+                } else {
+                    // Cord slack
+                    targetLength = Math.max(restLength * 0.55, dist);
+                }
+
+                // Shortest-arc angle lerp (absolutely avoids 360-degree flips)
+                let diff = targetTheta - theta;
+                while (diff > Math.PI) diff -= Math.PI * 2;
+                while (diff < -Math.PI) diff += Math.PI * 2;
+
+                theta += diff * 0.28;
+                currentLength += (targetLength - currentLength) * 0.28;
                 omega = 0;
                 lengthVelocity = 0;
 
-                const targetTwist = Math.max(-30, Math.min(30, dx * 0.12));
-                twist += (targetTwist - twist) * 0.3;
+                // Dynamic 3D yaw and pitch during drag
+                const targetTwist = Math.max(-25, Math.min(25, dx * 0.08));
+                twist += (targetTwist - twist) * 0.2;
 
-                const targetPitch = Math.max(-18, Math.min(18, (targetLength - restLength) * 0.08));
-                pitch += (targetPitch - pitch) * 0.3;
+                const targetPitch = Math.max(-15, Math.min(15, (targetLength - restLength) * 0.05));
+                pitch += (targetPitch - pitch) * 0.2;
 
             } else {
-                // Free Pendulum Physics Simulation
+                // Free Physical Pendulum Simulation
                 if (prefersReducedMotion) {
-                    // Minimal soft settle for users who prefer reduced motion
                     theta += (0 - theta) * 0.1;
                     currentLength += (restLength - currentLength) * 0.1;
                     twist += (0 - twist) * 0.1;
                     pitch += (0 - pitch) * 0.1;
                     omega = 0;
+                    lengthVelocity = 0;
                 } else {
-                    // 1. Angular Pendulum Equation: alpha = -(g/r)*sin(theta) - damping*omega + ambient
-                    const r = Math.max(50, currentLength);
-                    let alpha = -(gravity / r) * Math.sin(theta) - (damping * 60) * omega;
+                    // 1. Exact Angular Pendulum: alpha = -(g/L)*sin(theta) - dampingTheta*omega
+                    const L = Math.max(45, currentLength);
+                    let alpha = -(gravity / L) * Math.sin(theta) - dampingTheta * omega;
 
-                    // Organic compound ambient oscillation (prevents robotic repetition)
-                    const ambientTorque = 0.00038 * Math.sin(timeSec * 1.25) +
-                                         0.00020 * Math.sin(timeSec * 0.72 + 1.4) +
-                                         0.00012 * Math.cos(timeSec * 1.88 + 2.1);
-                    alpha += ambientTorque * (isHovered ? 2.2 : 1.0);
+                    // Subtle organic ambient sway (calm and lifelike)
+                    const ambient = 0.02 * Math.sin(timeSec * 1.35) + 0.01 * Math.sin(timeSec * 0.75 + 1.2);
+                    alpha += ambient * (isHovered ? 2.2 : 0.7);
 
-                    omega += alpha * dt * 60;
+                    omega += alpha * dt;
+                    omega = Math.max(-5.5, Math.min(5.5, omega));
                     theta += omega * dt;
 
-                    // 2. Radial Elastic Spring Equation
-                    const lengthDisplacement = currentLength - restLength;
-                    const springForce = -springK * lengthDisplacement - springDamp * lengthVelocity;
-                    const centrifugalForce = r * (omega * omega);
-                    const gravityAlongCord = gravity * Math.cos(theta) * 0.15;
-                    const radialAcc = springForce + centrifugalForce + gravityAlongCord;
+                    // 2. Radial Elastic Cord Spring
+                    const lengthDiff = currentLength - restLength;
+                    const springForce = -springK * lengthDiff - dampingR * lengthVelocity;
+                    const centrifugal = L * (omega * omega) * 0.15;
+                    const radialAcc = springForce + centrifugal;
 
                     lengthVelocity += radialAcc * dt;
+                    lengthVelocity = Math.max(-200, Math.min(200, lengthVelocity));
                     currentLength += lengthVelocity * dt;
+                    currentLength = Math.max(restLength * 0.6, Math.min(restLength * 1.45, currentLength));
 
-                    // 3. 3D Yaw Twist Harmonic Spring
-                    let ambientTwist = 2.4 * Math.sin(timeSec * 0.9 + 0.5);
+                    // 3. 3D Yaw Spring Settle
+                    const ambientTwist = 1.2 * Math.sin(timeSec * 1.05);
                     const twistAcc = -twistK * (twist - ambientTwist) - twistDamp * twistVel;
                     twistVel += twistAcc * dt;
                     twist += twistVel * dt;
 
-                    // 4. Subtle Pitch Reaction
-                    const targetPitch = -Math.sin(theta) * 14;
-                    pitch += (targetPitch - pitch) * 0.15;
+                    // 4. Subtle Pitch Settle
+                    pitch += (0 - pitch) * 0.1;
                 }
             }
 
@@ -1250,24 +1264,29 @@ Welcome to Rhea's digital matrix.
             // Apply 3D Transform to Badge
             badge.style.transform = `translate3d(${tipX}px, ${tipY}px, 0) translate(-50%, 0) rotateZ(${rotDeg}deg) rotateY(${twist}deg) rotateX(${pitch}deg)`;
 
-            // Update Dynamic SVG Lanyard Spline
-            const midX = (anchorX + tipX) * 0.5 + Math.sin(theta) * 16;
-            const midY = (anchorY + tipY) * 0.5;
+            // SVG Lanyard Spline with realistic slack simulation
+            const slack = Math.max(0, restLength - currentLength);
+            const midX = (anchorX + tipX) * 0.5 + Math.sin(theta) * 10;
+            const midY = (anchorY + tipY) * 0.5 + slack * 0.45;
             const d = `M ${anchorX} ${anchorY} Q ${midX} ${midY} ${tipX} ${tipY}`;
 
             strapPath.setAttribute('d', d);
             if (shadowPath) {
-                shadowPath.setAttribute('d', `M ${anchorX + 10} ${anchorY + 16} Q ${midX + 12} ${midY + 22} ${tipX + 10} ${tipY + 26}`);
+                shadowPath.setAttribute('d', `M ${anchorX + 5} ${anchorY + 6} Q ${midX + 7} ${midY + 10} ${tipX + 5} ${tipY + 12}`);
             }
             if (seamPath) {
                 seamPath.setAttribute('d', d);
             }
 
-            // Dynamic Glare & Sheen Effect based on Yaw & Roll
+            // Glare & Hologram updates based on 3D rotation
             if (glareOverlay) {
-                const glareAngle = 45 + twist * 1.5 + rotDeg * 0.8;
-                const glareOpacity = Math.max(0.1, Math.min(0.65, 0.3 + Math.abs(twist) * 0.012));
+                const glareAngle = 45 + twist * 2 + rotDeg * 0.7;
+                const glareOpacity = Math.max(0.12, Math.min(0.55, 0.28 + Math.abs(twist) * 0.012));
                 glareOverlay.style.background = `linear-gradient(${glareAngle}deg, rgba(255, 255, 255, ${glareOpacity}) 0%, transparent 60%)`;
+            }
+            if (hologramStrip) {
+                const hueShift = Math.floor((twist * 6 + rotDeg * 2.5 + 360) % 360);
+                hologramStrip.style.filter = `hue-rotate(${hueShift}deg)`;
             }
         };
 
