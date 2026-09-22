@@ -58,6 +58,11 @@ html.dark {
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+}
+
 body {
   font-family: var(--font-body);
   background-color: #fff7f9;
@@ -72,6 +77,10 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   line-height: 1.7;
+}
+
+body.modal-open {
+  overflow: hidden !important;
 }
 
 html.dark body {
@@ -693,7 +702,7 @@ html.dark .swiper-slide-active .glass-card {
   transform-origin: 50% 0px;
   cursor: grab;
   cursor: -webkit-grab;
-  touch-action: none;
+  touch-action: pan-y;
   user-select: none;
   -webkit-user-select: none;
   pointer-events: auto;
@@ -809,14 +818,25 @@ html.dark .id-card-surface {
 /* Responsive ID Badge Sizing */
 @media (max-width: 1023px) {
   #hanging-badge {
-    width: 285px;
+    width: 275px;
   }
 }
 
 @media (max-width: 639px) {
   #hanging-badge {
-    width: 240px;
+    width: 232px;
   }
+}
+
+@media (max-width: 374px) {
+  #hanging-badge {
+    width: 212px;
+  }
+}
+
+.swiper-button-disabled {
+  opacity: 0.35 !important;
+  pointer-events: none !important;
 }
 
 /* --- 16. Accessibility: Reduced Motion --- */

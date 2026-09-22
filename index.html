@@ -213,16 +213,7 @@
 
     <!-- ==================== FLOATING TOPBAR ==================== -->
     <header id="floating-nav-container" class="fixed top-3.5 sm:top-5 left-0 right-0 z-50 flex justify-center px-4 sm:px-6 pointer-events-none">
-        <div id="navbar" class="w-full max-w-3xl floating-navbar pointer-events-auto flex items-center justify-between px-5 sm:px-6 py-2.5 relative">
-            
-            <!-- Logo with subtle live status indicator -->
-            <a href="#home" class="text-base font-bold tracking-wide font-sans flex items-center gap-2.5 group" aria-label="Rhea Portfolio Home">
-                <span class="relative flex h-2.5 w-2.5">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-pink-500"></span>
-                </span>
-                <span class="text-slate-900 dark:text-white font-bold group-hover:text-pink-600 transition-colors">Rhea Mae</span>
-            </a>
+        <div id="navbar" class="floating-navbar pointer-events-auto flex items-center justify-between gap-3 sm:gap-6 px-3.5 sm:px-5 py-2 relative shadow-floating">
             
             <!-- Desktop Nav Links -->
             <nav class="hidden md:flex items-center space-x-1" aria-label="Main Navigation">
@@ -233,6 +224,9 @@
                 <a href="#projects" class="nav-link">Projects</a>
                 <a href="#contact" class="nav-link">Contact</a>
             </nav>
+
+            <!-- Subtle vertical separator on desktop -->
+            <div class="hidden md:block w-px h-5 bg-pink-200/80 dark:bg-pink-500/20" aria-hidden="true"></div>
 
             <!-- Actions: Theme Toggle & Mobile Menu -->
             <div class="flex items-center gap-2">
@@ -250,7 +244,7 @@
             </div>
 
             <!-- Floating Mobile Navigation Dropdown -->
-            <div id="mobile-menu" class="hidden md:hidden absolute top-[calc(100%+0.5rem)] left-0 right-0 p-4 floating-mobile-menu transition-all duration-200">
+            <div id="mobile-menu" class="hidden md:hidden absolute top-[calc(100%+0.6rem)] left-1/2 -translate-x-1/2 w-[calc(100vw-2rem)] max-w-xs p-4 floating-mobile-menu transition-all duration-200 shadow-xl">
                 <nav class="flex flex-col space-y-1 text-sm font-medium">
                     <a href="#home" class="mobile-nav-link py-2 px-3.5 rounded-xl hover:bg-pink-100 hover:text-pink-600 transition-colors">Home</a>
                     <a href="#about" class="mobile-nav-link py-2 px-3.5 rounded-xl hover:bg-pink-100 hover:text-pink-600 transition-colors">About Me</a>
@@ -540,7 +534,7 @@
                                         Philippines                      
                                     </span>                              
                                 </div>                                   
-                                <h3 class="text-lg sm:text-xl md:text-2x font-bold font-sans text-slate-900 dark:text-white leading-snug">      
+                                <h3 class="text-lg sm:text-xl md:text-2xl font-bold font-sans text-slate-900 dark:text-white leading-snug">      
                                     Security Bank Foundation Scholar     
                                 </h3>                                    
                                 <p class="text-sm sm:text-base font-semibold text-pink-600 dark:text-pink-400 mt-0.5 sm:mt-1">             
@@ -842,12 +836,20 @@
                                     View Project Case Study ➜
                                 </button>
                             </div>
-                        </div>
                     </div>
-
                 </div>
-                <!-- Swiper Pagination Dots -->
-                <div class="swiper-pagination mt-8 !static flex justify-center"></div>
+            </div>
+
+            <!-- Swiper Controls: Prev / Dots / Next -->
+                <div class="flex items-center justify-center gap-3 sm:gap-4 mt-8">
+                    <button class="swiper-prev-btn btn-icon !w-9 !h-9 text-slate-500 hover:text-pink-600 hover:border-pink-300" aria-label="Previous project" title="Previous Project">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    </button>
+                    <div class="swiper-pagination !static !w-auto flex justify-center"></div>
+                    <button class="swiper-next-btn btn-icon !w-9 !h-9 text-slate-500 hover:text-pink-600 hover:border-pink-300" aria-label="Next project" title="Next Project">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
             </div>
 
         </div>

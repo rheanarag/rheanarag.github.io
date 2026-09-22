@@ -8,7 +8,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     'use strict';
 
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // ==========================================================================
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const heartFollower = document.getElementById('heart-cursor-follower');
     const heartParticleLayer = document.getElementById('heart-particle-layer');
 
-    if (!isTouchDevice && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    if (hasFinePointer) {
         document.body.classList.add('custom-cursor-active');
 
         let mouseX = window.innerWidth / 2;
@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     const tiltCards = document.querySelectorAll('.tilt-card');
 
-    if (!isTouchDevice && typeof gsap !== 'undefined' && !prefersReducedMotion) {
+    if (hasFinePointer && typeof gsap !== 'undefined' && !prefersReducedMotion) {
         tiltCards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
@@ -285,43 +285,66 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     if (mobileMenuBtn) {
-        mobileMenuBtn.addEventListener('click', () => toggleMobileMenu());
+        mobileMenuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMobileMenu();
+        });
     }
 
     mobileNavLinks.forEach(link => {
         link.addEventListener('click', () => toggleMobileMenu(false));
     });
 
+    // Close mobile menu on outside click
+    document.addEventListener('click', (e) => {
+        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+            if (!mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                toggleMobileMenu(false);
+            }
+        }
+    });
+
+    // Close mobile menu on desktop breakpoint resize
+    window.addEventListener('resize', () => {
+        if (window.innerWidth >= 768 && mobileMenu && !mobileMenu.classList.contains('hidden')) {
+            toggleMobileMenu(false);
+        }
+    }, { passive: true });
+
     // ==========================================================================
     // 6. SWIPER PROJECTS CAROUSEL
     // ==========================================================================
     if (typeof Swiper !== 'undefined') {
         new Swiper('.projects-swiper', {
-            slidesPerView: 1.15,
-            spaceBetween: 24,
+            slidesPerView: 1.05,
+            spaceBetween: 20,
             centeredSlides: true,
             grabCursor: true,
             slideToClickedSlide: true,
             watchSlidesProgress: true,
+            navigation: {
+                nextEl: '.swiper-next-btn',
+                prevEl: '.swiper-prev-btn',
+            },
             pagination: {
                 el: '.swiper-pagination',
                 clickable: true,
             },
             breakpoints: {
                 640: {
-                    slidesPerView: 1.5,
-                    spaceBetween: 28,
+                    slidesPerView: 1.35,
+                    spaceBetween: 24,
                     centeredSlides: true,
                 },
                 1024: {
-                    slidesPerView: 2.1,
-                    spaceBetween: 36,
-                    centeredSlides: true,
+                    slidesPerView: 2,
+                    spaceBetween: 32,
+                    centeredSlides: false,
                 },
                 1280: {
-                    slidesPerView: 2.25,
-                    spaceBetween: 40,
-                    centeredSlides: true,
+                    slidesPerView: 2.2,
+                    spaceBetween: 36,
+                    centeredSlides: false,
                 }
             }
         });
@@ -353,6 +376,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     card.style.display = 'none';
                 }
             });
+
+            if (typeof ScrollTrigger !== 'undefined') {
+                setTimeout(() => ScrollTrigger.refresh(), 360);
+            }
         });
     });
 
@@ -369,6 +396,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!resumeModal) return;
         resumeModal.classList.remove('hidden');
         resumeModal.classList.add('flex');
+        document.body.classList.add('modal-open');
         requestAnimationFrame(() => {
             resumeModal.style.opacity = '1';
             const inner = resumeModal.querySelector('.glass-panel');
@@ -379,6 +407,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeResumeModal = () => {
         if (!resumeModal) return;
         resumeModal.style.opacity = '0';
+        document.body.classList.remove('modal-open');
         const inner = resumeModal.querySelector('.glass-panel');
         if (inner) inner.classList.add('scale-95');
         setTimeout(() => {
@@ -499,6 +528,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         projectModal.classList.remove('hidden');
         projectModal.classList.add('flex');
+        document.body.classList.add('modal-open');
         requestAnimationFrame(() => {
             projectModal.style.opacity = '1';
             const inner = projectModal.querySelector('.glass-panel');
@@ -509,6 +539,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeProjectModal = () => {
         if (!projectModal) return;
         projectModal.style.opacity = '0';
+        document.body.classList.remove('modal-open');
         const inner = projectModal.querySelector('.glass-panel');
         if (inner) inner.classList.add('scale-95');
         setTimeout(() => {
@@ -580,14 +611,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Keyboard Shortcut (Ctrl+K or Cmd+K)
     document.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-            e.preventDefault();
-            if (terminalOverlay && terminalOverlay.classList.contains('hidden')) {
-                openTerminal();
-            } else {
-                hideTerminal();
+            if (terminalOverlay) {
+                e.preventDefault();
+                if (terminalOverlay.classList.contains('hidden')) {
+                    openTerminal();
+                } else {
+                    hideTerminal();
+                }
             }
         }
         if (e.key === 'Escape') {
+            toggleMobileMenu(false);
             hideTerminal();
             closeResumeModal();
             closeProjectModal();
@@ -775,15 +809,15 @@ Welcome to Rhea's digital matrix.
             const submitBtnText = document.getElementById('submit-btn-text');
 
             if (submitBtn && submitBtnText) {
-                submitBtnText.innerText = 'TRANSMITTING PROTOCOL...';
+                submitBtnText.innerText = 'Sending Message...';
                 submitBtn.disabled = true;
 
                 setTimeout(() => {
-                    submitBtnText.innerText = '✓ TRANSMISSION DELIVERED';
-                    showToast('Message transmitted! Rhea will respond promptly.', 'success');
+                    submitBtnText.innerText = '✓ Message Sent!';
+                    showToast('Message sent! Rhea will respond promptly.', 'success');
 
                     setTimeout(() => {
-                        submitBtnText.innerText = 'SEND PROTOCOL TRANSMISSION';
+                        submitBtnText.innerText = 'Send Message 🌸';
                         submitBtn.disabled = false;
                         contactForm.reset();
                         if (charCounter) charCounter.innerText = '0 / 500';
@@ -862,22 +896,31 @@ Welcome to Rhea's digital matrix.
             }
         }
 
-        // Active Section Scrollspy
+        // Active Section Scrollspy using robust viewport intersection
         let current = '';
-        const scrollPos = scrollY + 250;
-
         sections.forEach(section => {
-            const top = section.offsetTop;
-            const height = section.offsetHeight;
-            if (scrollPos >= top && scrollPos < top + height) {
+            const rect = section.getBoundingClientRect();
+            if (rect.top <= 260 && rect.bottom >= 140) {
                 current = section.getAttribute('id');
             }
         });
+
+        if (!current && sections.length > 0 && window.scrollY < 200) {
+            current = sections[0].getAttribute('id');
+        }
 
         navLinks.forEach(link => {
             link.classList.remove('active');
             if (link.getAttribute('href') === `#${current}`) {
                 link.classList.add('active');
+            }
+        });
+
+        mobileNavLinks.forEach(link => {
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('bg-pink-100', 'text-pink-600', 'font-semibold');
+            } else {
+                link.classList.remove('bg-pink-100', 'text-pink-600', 'font-semibold');
             }
         });
     }, { passive: true });
@@ -921,8 +964,10 @@ Welcome to Rhea's digital matrix.
         const twistDamp = 6.5; // Yaw damping
 
         let isDragging = false;
+        let isPointerActive = false;
         let isHovered = false;
         let hasInteracted = false;
+        let startPointer = { x: 0, y: 0 };
         let pointerHistory = [];
         let dragOffset = { x: 0, y: 0 };
         let pointerPos = { x: 0, y: 0 };
@@ -935,25 +980,27 @@ Welcome to Rhea's digital matrix.
             const containerRect = container.getBoundingClientRect();
             const width = containerRect.width;
             const height = containerRect.height;
-            const isDesktop = width >= 1024;
-            const isTablet = width >= 640 && width < 1024;
+            const isDesktop = window.innerWidth >= 1024;
+            const isTablet = window.innerWidth >= 640 && window.innerWidth < 1024;
 
-            if (isDesktop && heroRightCard) {
+            if (heroRightCard) {
                 const rightCardRect = heroRightCard.getBoundingClientRect();
-                // Position anchor cleanly aligned with the center of the hero right column
                 const targetX = (rightCardRect.left - containerRect.left) + rightCardRect.width * 0.5;
-                anchorX = Math.max(width * 0.52, Math.min(width - 170, targetX));
-                anchorY = 0;
-                restLength = Math.min(160, Math.max(115, height * 0.16));
-            } else if (isTablet) {
-                anchorX = width * 0.76;
-                anchorY = 0;
-                restLength = 110;
+
+                if (isDesktop) {
+                    anchorX = Math.max(width * 0.52, Math.min(width - 170, targetX));
+                    anchorY = 0;
+                    restLength = Math.min(160, Math.max(115, height * 0.16));
+                } else {
+                    // Mobile & Tablet: position anchor cleanly centered in the dedicated hero-right column
+                    anchorX = targetX;
+                    anchorY = Math.max(0, rightCardRect.top - containerRect.top + 8);
+                    restLength = isTablet ? 85 : 68;
+                }
             } else {
-                // Mobile
-                anchorX = width * 0.74;
+                anchorX = width * 0.5;
                 anchorY = 0;
-                restLength = 85;
+                restLength = 80;
             }
 
             // Update top mounting bracket position
@@ -965,6 +1012,13 @@ Welcome to Rhea's digital matrix.
 
         updateAnchorPosition();
         window.addEventListener('resize', updateAnchorPosition, { passive: true });
+        window.addEventListener('load', () => {
+            updateAnchorPosition();
+            if (typeof ScrollTrigger !== 'undefined') {
+                ScrollTrigger.refresh();
+            }
+        });
+        setTimeout(updateAnchorPosition, 350);
 
         // Visibility Observer to pause physics when offscreen
         if ('IntersectionObserver' in window) {
@@ -993,13 +1047,10 @@ Welcome to Rhea's digital matrix.
         // Pointer Interaction Handlers (Mouse + Touch)
         const onPointerDown = (e) => {
             if (e.button !== undefined && e.button !== 0) return; // Left click only
-            isDragging = true;
-            if (badge.setPointerCapture && e.pointerId) {
-                badge.setPointerCapture(e.pointerId);
-            }
 
             const coords = getContainerCoords(e);
             pointerPos = coords;
+            startPointer = { x: coords.x, y: coords.y };
 
             // Current clip center
             const clipX = anchorX + currentLength * Math.sin(theta);
@@ -1010,20 +1061,52 @@ Welcome to Rhea's digital matrix.
                 y: coords.y - clipY
             };
 
+            isPointerActive = true;
             pointerHistory = [{ x: coords.x, y: coords.y, time: performance.now() }];
-            badge.classList.add('is-dragging');
 
-            if (!hasInteracted && dragHint) {
-                hasInteracted = true;
-                dragHint.style.opacity = '0';
-                setTimeout(() => dragHint.remove(), 600);
+            // Mouse triggers immediately; touch waits for slight threshold to not freeze vertical page scroll
+            if (e.pointerType !== 'touch') {
+                isDragging = true;
+                if (badge.setPointerCapture && e.pointerId) {
+                    try { badge.setPointerCapture(e.pointerId); } catch (_) {}
+                }
+                badge.classList.add('is-dragging');
+
+                if (!hasInteracted && dragHint) {
+                    hasInteracted = true;
+                    dragHint.style.opacity = '0';
+                    setTimeout(() => dragHint.remove(), 600);
+                }
             }
         };
 
         const onPointerMove = (e) => {
-            if (!isDragging) return;
+            if (!isPointerActive) return;
             const coords = getContainerCoords(e);
             pointerPos = coords;
+
+            if (!isDragging && e.pointerType === 'touch') {
+                const dx = coords.x - startPointer.x;
+                const dy = coords.y - startPointer.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist > 8) {
+                    isDragging = true;
+                    if (badge.setPointerCapture && e.pointerId) {
+                        try { badge.setPointerCapture(e.pointerId); } catch (_) {}
+                    }
+                    badge.classList.add('is-dragging');
+
+                    if (!hasInteracted && dragHint) {
+                        hasInteracted = true;
+                        dragHint.style.opacity = '0';
+                        setTimeout(() => dragHint.remove(), 600);
+                    }
+                } else {
+                    return;
+                }
+            }
+
+            if (!isDragging) return;
 
             const now = performance.now();
             pointerHistory.push({ x: coords.x, y: coords.y, time: now });
@@ -1033,13 +1116,16 @@ Welcome to Rhea's digital matrix.
         };
 
         const onPointerUp = (e) => {
-            if (!isDragging) return;
-            isDragging = false;
-            badge.classList.remove('is-dragging');
+            if (!isPointerActive) return;
+            isPointerActive = false;
 
-            if (badge.releasePointerCapture && e.pointerId) {
-                try { badge.releasePointerCapture(e.pointerId); } catch (_) {}
-            }
+            if (isDragging) {
+                isDragging = false;
+                badge.classList.remove('is-dragging');
+
+                if (badge.releasePointerCapture && e.pointerId) {
+                    try { badge.releasePointerCapture(e.pointerId); } catch (_) {}
+                }
 
             // Calculate release velocity from rolling pointer history
             const now = performance.now();
@@ -1073,7 +1159,8 @@ Welcome to Rhea's digital matrix.
             // Yaw twist impulse from horizontal throw
             twistVel = -vx * 0.08;
             twistVel = Math.max(-120, Math.min(120, twistVel));
-        };
+        }
+    };
 
         badge.addEventListener('pointerdown', onPointerDown);
         window.addEventListener('pointermove', onPointerMove, { passive: true });
