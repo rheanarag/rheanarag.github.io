@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en" class="light scroll-smooth">
+<head>
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rhea Mae Narag | Frontend Developer &amp; AI Systems Engineer</title>
+    <meta name="description" content="Portfolio of Rhea Mae Narag - BSIT student at PUP, aspiring Frontend Developer and AI Systems Engineer specializing in intuitive user interfaces, responsive design, and systems architecture.">
+    
+    <!-- Google Fonts: Space Grotesk (Sans/Display), Inter (Body), Playfair Display (Serif/Cursive), JetBrains Mono (Tech/Mono) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600;1,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    
+    <!-- Tailwind CSS with Pastel Pink theme extensions -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
+                        cursive: ['Playfair Display', 'Georgia', 'serif'],
+                        handwriting: ['Caveat', 'cursive', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        pink: {
+                            50: '#fff1f4',
+                            100: '#ffe4e9',
+                            200: '#fecdd6',
+                            300: '#fea3b4',
+                            400: '#f8728b',
+                            500: '#e85c78',
+                            600: '#d54060',
+                            700: '#b32b49',
+                            DEFAULT: '#e85c78',
+                            hover: '#d54060',
+                            soft: '#f8728b',
+                            pastel: '#fecdd6',
+                            light: '#fff1f4',
+                            subtle: '#fff0f3',
+                        },
+                        surface: {
+                            light: '#fff7f9',
+                            card: 'rgba(255, 255, 255, 0.85)',
+                            elevated: '#ffffff',
+                            dark: '#150f14',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom Pastel Design System Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="text-slate-800 dark:text-slate-100 selection:bg-pink-200 selection:text-pink-900 transition-colors duration-400 relative min-h-screen">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Ambient Aesthetic Pastel Background Canvas -->
+    <div class="aesthetic-bg-canvas" aria-hidden="true"></div>
+    <div class="aesthetic-bg-pattern" aria-hidden="true"></div>
+
+    <!-- Themed Interactive Heart Cursor System (Desktop) -->
+    <div id="heart-cursor-container" class="pointer-events-none fixed inset-0 z-[9999] overflow-hidden hidden md:block" aria-hidden="true">
+        <!-- Trailing Glowing Heart Follower / Aura Ring -->
+        <div id="heart-cursor-follower" class="fixed top-0 left-0 -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-0 transition-opacity duration-300">
+            <div class="heart-follower-ring w-8 h-8 rounded-full border border-pink-400/40 bg-pink-100/30 backdrop-blur-[1px] shadow-[0_0_14px_rgba(232,92,120,0.25)] transition-all duration-300 ease-out"></div>
+        </div>
+
+        <!-- Main Precision Heart Cursor Pointer -->
+        <div id="heart-cursor" class="fixed top-0 left-0 -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-0 transition-opacity duration-300">
+            <svg class="w-6 h-6 transform -rotate-12 filter drop-shadow-[0_2px_8px_rgba(232,92,120,0.45)] transition-transform duration-150 ease-out" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" 
+                      fill="url(#heart-cursor-gradient)" 
+                      stroke="#ffffff" 
+                      stroke-width="1.2" 
+                      stroke-opacity="0.9" />
+                <defs>
+                    <linearGradient id="heart-cursor-gradient" x1="2" y1="3" x2="22" y2="21.35" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#fbcfe8" />
+                        <stop offset="50%" stop-color="#f8728b" />
+                        <stop offset="100%" stop-color="#e85c78" />
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+
+        <!-- Floating Micro-Heart Particles Layer -->
+        <div id="heart-particle-layer" class="fixed inset-0 pointer-events-none overflow-hidden"></div>
+    </div>
+
+    <!-- ==================== RESUME PREVIEW MODAL ==================== -->
+    <div id="resume-modal" class="fixed inset-0 z-[110] modal-backdrop hidden items-center justify-center p-4 opacity-0 transition-opacity duration-300" role="dialog" aria-modal="true" aria-labelledby="resume-modal-title">
+        <div class="glass-panel w-full max-w-3xl rounded-3xl overflow-hidden shadow-2xl border border-pink-200 dark:border-pink-500/30 transform scale-95 transition-transform duration-300 max-h-[90vh] flex flex-col bg-white/95 dark:bg-slate-900/95">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between px-6 py-4 border-b border-pink-100 dark:border-white/10 bg-pink-50/50 dark:bg-black/30">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-pink-500"></span>
+                    <h3 id="resume-modal-title" class="font-sans text-sm font-bold text-slate-800 dark:text-white tracking-wide">Rhea Mae Narag — Curriculum Vitae</h3>
+                </div>
+                <div class="flex items-center gap-2">
+                    <a href="assets/resume.pdf" download="Rhea_Mae_Narag_Resume.pdf" class="btn-primary text-xs !py-1.5 !px-3.5" id="download-resume-btn">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        Download PDF
+                    </a>
+                    <button id="close-resume-modal" class="btn-icon !w-8 !h-8 text-slate-400 hover:text-pink-500" aria-label="Close resume modal">✕</button>
+                </div>
+            </div>
+            <!-- Modal Content (Scrollable) -->
+            <div class="p-6 md:p-8 overflow-y-auto space-y-6 text-sm">
+                <!-- Header Info -->
+                <div class="border-b border-pink-100 dark:border-white/10 pb-6">
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-white font-sans">Rhea Mae Narag</h2>
+                    <p class="text-pink-600 dark:text-pink-400 font-serif italic text-base font-semibold mt-1">Aspiring Frontend Developer &amp; AI Systems Engineer</p>
+                    <div class="flex flex-wrap gap-4 mt-3 text-xs text-slate-500 dark:text-slate-400">
+                        <span class="flex items-center gap-1.5">📍 Manila, Philippines</span>
+                        <span class="flex items-center gap-1.5">✉️ rhea.narag22@gmail.com</span>
+                        <span class="flex items-center gap-1.5">🔗 linkedin.com/in/rhea-mae-narag-192891393</span>
+                    </div>
+                </div>
+
+                <!-- Education -->
+                <div>
+                    <h4 class="text-xs text-pink-600 dark:text-pink-400 uppercase tracking-wider font-bold mb-3">Education &amp; Distinctions</h4>
+                    <div class="glass-card p-4 rounded-2xl space-y-2 border border-pink-100">
+                        <div class="flex justify-between items-start flex-wrap gap-2">
+                            <div>
+                                <div class="font-bold text-slate-900 dark:text-white">Polytechnic University of the Philippines (PUP)</div>
+                                <div class="text-xs text-pink-600 dark:text-pink-400">Bachelor of Science in Information Technology</div>
+                            </div>
+                            <span class="text-xs px-2.5 py-0.5 rounded-full bg-pink-100 text-pink-700 border border-pink-200">2024 – 2028 (Expected)</span>
+                        </div>
+                        <ul class="list-disc list-inside text-xs text-slate-600 dark:text-slate-300 space-y-1.5 pt-2">
+                            <li><strong>President's Lister:</strong> Consistent Top Academic Honors (1st &amp; 2nd Year).</li>
+                            <li><strong>SBFI Scholar:</strong> Security Bank Foundation Inc. Academic Excellence Scholar.</li>
+                            <li>Coursework focus: Frontend Architecture, Database Engineering, and Computer Networks.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Technical Skills -->
+                <div>
+                    <h4 class="text-xs text-pink-600 dark:text-pink-400 uppercase tracking-wider font-bold mb-3">Technical Competencies</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                        <div class="glass-card p-3.5 rounded-xl border border-pink-100">
+                            <span class="font-semibold text-slate-800 dark:text-slate-200 block mb-1">Languages:</span>
+                            <span class="text-slate-600 dark:text-slate-400">Python, JavaScript (ES6+), Java, C, SQL, R, COBOL</span>
+                        </div>
+                        <div class="glass-card p-3.5 rounded-xl border border-pink-100">
+                            <span class="font-semibold text-slate-800 dark:text-slate-200 block mb-1">Frontend &amp; UI/UX:</span>
+                            <span class="text-slate-600 dark:text-slate-400">HTML5, CSS3, Tailwind CSS, Figma, HCI Principles, UCD</span>
+                        </div>
+                        <div class="glass-card p-3.5 rounded-xl border border-pink-100">
+                            <span class="font-semibold text-slate-800 dark:text-slate-200 block mb-1">Backend &amp; Databases:</span>
+                            <span class="text-slate-600 dark:text-slate-400">Flask, MySQL, Database Normalization, ERD Modeling</span>
+                        </div>
+                        <div class="glass-card p-3.5 rounded-xl border border-pink-100">
+                            <span class="font-semibold text-slate-800 dark:text-slate-200 block mb-1">Networking &amp; Systems:</span>
+                            <span class="text-slate-600 dark:text-slate-400">Cisco Packet Tracer, OSPF Routing, Cisco ASA 5506-X</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Key Projects -->
+                <div>
+                    <h4 class="text-xs text-pink-600 dark:text-pink-400 uppercase tracking-wider font-bold mb-3">Featured Projects</h4>
+                    <div class="space-y-3 text-xs">
+                        <div class="glass-card p-3.5 rounded-xl border border-pink-100">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-bold text-slate-800 dark:text-slate-200">SALN Submission Portal</span>
+                                <span class="text-[10px] text-pink-600 font-medium">MySQL • Flask • JavaScript</span>
+                            </div>
+                            <p class="text-slate-600 dark:text-slate-400">Full-stack web application designed for government asset declaration processing and real-time computation.</p>
+                        </div>
+                        <div class="glass-card p-3.5 rounded-xl border border-pink-100">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-bold text-slate-800 dark:text-slate-200">University Room-Booking UI</span>
+                                <span class="text-[10px] text-pink-600 font-medium">Figma • UI/UX • HCI</span>
+                            </div>
+                            <p class="text-slate-600 dark:text-slate-400">Human-centered user interface solving campus room allocation bottlenecks through visual scheduling.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== PROJECT CASE STUDY MODAL ==================== -->
+    <div id="project-modal" class="fixed inset-0 z-[110] modal-backdrop hidden items-center justify-center p-4 opacity-0 transition-opacity duration-300" role="dialog" aria-modal="true" aria-labelledby="project-modal-title">
+        <div class="glass-panel w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl border border-pink-200 dark:border-pink-500/30 transform scale-95 transition-transform duration-300 max-h-[90vh] flex flex-col bg-white/95 dark:bg-slate-900/95">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-pink-100 dark:border-white/10 bg-pink-50/50 dark:bg-black/30">
+                <div class="flex items-center gap-3">
+                    <span id="project-modal-badge" class="px-2.5 py-0.5 rounded-full text-xs bg-pink-100 text-pink-700 font-semibold border border-pink-200">CASE STUDY</span>
+                    <h3 id="project-modal-title" class="font-bold text-slate-900 dark:text-white font-sans text-base sm:text-lg">Project Details</h3>
+                </div>
+                <button id="close-project-modal" class="btn-icon !w-8 !h-8 text-slate-400 hover:text-pink-500" aria-label="Close project modal">✕</button>
+            </div>
+            <div id="project-modal-body" class="p-6 md:p-8 overflow-y-auto space-y-6 text-sm">
+                <!-- Injected via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== FLOATING TOPBAR ==================== -->
+    <header id="floating-nav-container" class="fixed top-3.5 sm:top-5 left-0 right-0 z-50 flex justify-center px-4 sm:px-6 pointer-events-none">
+        <div id="navbar" class="w-full max-w-3xl floating-navbar pointer-events-auto flex items-center justify-between px-5 sm:px-6 py-2.5 relative">
+            
+            <!-- Logo with subtle live status indicator -->
+            <a href="#home" class="text-base font-bold tracking-wide font-sans flex items-center gap-2.5 group" aria-label="Rhea Portfolio Home">
+                <span class="relative flex h-2.5 w-2.5">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-pink-500"></span>
+                </span>
+                <span class="text-slate-900 dark:text-white font-bold group-hover:text-pink-600 transition-colors">Rhea Mae</span>
+                <span class="text-[11px] text-pink-600 font-medium px-2 py-0.5 rounded-full bg-pink-100 border border-pink-200 hidden sm:inline-block">PUP IT '28</span>
+            </a>
+            
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center space-x-1" aria-label="Main Navigation">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#education" class="nav-link">Education</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </nav>
+
+            <!-- Actions: Theme Toggle & Mobile Menu -->
+            <div class="flex items-center gap-2">
+                <!-- Theme Toggle Button -->
+                <button id="theme-toggle" class="btn-icon hover:border-pink-400 hover:text-pink-500" title="Toggle Light/Dark Theme" aria-label="Toggle Theme">
+                    <svg id="moon-icon" class="w-4 h-4 hidden dark:block text-pink-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    <svg id="sun-icon" class="w-4 h-4 block dark:hidden text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                </button>
+
+                <!-- Mobile Hamburger Menu Button -->
+                <button id="mobile-menu-btn" class="btn-icon md:hidden" aria-label="Toggle mobile menu" aria-expanded="false">
+                    <svg id="hamburger-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    <svg id="close-menu-icon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <!-- Floating Mobile Navigation Dropdown -->
+            <div id="mobile-menu" class="hidden md:hidden absolute top-[calc(100%+0.5rem)] left-0 right-0 p-4 floating-mobile-menu transition-all duration-200">
+                <nav class="flex flex-col space-y-1 text-sm font-medium">
+                    <a href="#home" class="mobile-nav-link py-2 px-3.5 rounded-xl hover:bg-pink-100 hover:text-pink-600 transition-colors">Home</a>
+                    <a href="#about" class="mobile-nav-link py-2 px-3.5 rounded-xl hover:bg-pink-100 hover:text-pink-600 transition-colors">About Me</a>
+                    <a href="#education" class="mobile-nav-link py-2 px-3.5 rounded-xl hover:bg-pink-100 hover:text-pink-600 transition-colors">Education &amp; Honors</a>
+                    <a href="#skills" class="mobile-nav-link py-2 px-3.5 rounded-xl hover:bg-pink-100 hover:text-pink-600 transition-colors">Technical Skills</a>
+                    <a href="#projects" class="mobile-nav-link py-2 px-3.5 rounded-xl hover:bg-pink-100 hover:text-pink-600 transition-colors">Featured Projects</a>
+                    <a href="#contact" class="mobile-nav-link py-2 px-3.5 rounded-xl hover:bg-pink-100 hover:text-pink-600 transition-colors">Contact</a>
+                </nav>
+                <div class="mt-3 pt-3 border-t border-pink-100 dark:border-white/10 flex gap-2">
+                    <button id="mobile-resume-btn" class="btn-primary flex-1 text-xs py-2">
+                        View Resume
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section id="home" class="min-h-screen flex items-center relative pt-28 sm:pt-32 pb-16 overflow-hidden">
+        
+        <!-- Interactive Hanging ID Badge with Flexible Pastel Ribbon Lanyard -->
+        <div id="hanging-id-container" class="absolute inset-0 pointer-events-none z-30 overflow-visible" aria-label="Interactive Hanging ID Badge">
+            <!-- Dynamic Lanyard SVG Spline -->
+            <svg id="lanyard-svg" class="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="lanyard-strap-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#fbcfe8" />
+                        <stop offset="50%" stop-color="#f8728b" />
+                        <stop offset="100%" stop-color="#e85c78" />
+                    </linearGradient>
+                    <filter id="lanyard-glow-shadow" x="-30%" y="-30%" width="160%" height="160%">
+                        <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="rgba(232,92,120,0.18)" />
+                    </filter>
+                </defs>
+                <!-- Background ambient shadow -->
+                <path id="lanyard-shadow-path" fill="none" stroke="rgba(232,92,120,0.15)" stroke-width="16" stroke-linecap="round" filter="url(#lanyard-glow-shadow)" />
+                <!-- Main woven pastel strap -->
+                <path id="lanyard-strap-path" fill="none" stroke="url(#lanyard-strap-gradient)" stroke-width="13" stroke-linecap="round" />
+                <!-- Inner woven stitch seam line -->
+                <path id="lanyard-seam-path" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.8" stroke-dasharray="5,4" />
+            </svg>
+
+            <!-- Top Anchor Point Mount -->
+            <div id="lanyard-anchor-mount" class="absolute pointer-events-none -translate-x-1/2 flex flex-col items-center z-30">
+                <div class="w-12 h-3.5 bg-gradient-to-r from-pink-200 via-rose-100 to-pink-300 rounded-b-lg shadow-md border-b border-pink-400/40"></div>
+                <div class="w-6 h-2 bg-slate-300/60 rounded-b-sm"></div>
+            </div>
+
+            <!-- Hanging Badge Physical Entity (Draggable & Physics-Driven) -->
+            <div id="hanging-badge" class="absolute pointer-events-auto cursor-grab select-none touch-none z-30" style="will-change: transform;">
+                <!-- Metal Clip Assembly -->
+                <div class="id-clip-assembly flex flex-col items-center">
+                    <div class="id-metal-clasp"></div>
+                    <div class="id-metal-ring"></div>
+                </div>
+
+                <!-- Acrylic Badge Outer Sleeve -->
+                <div class="id-acrylic-holder relative rounded-3xl p-3 sm:p-3.5 shadow-xl backdrop-blur-md">
+                    <!-- Top Slot Hole -->
+                    <div class="id-slot-hole"></div>
+
+                    <!-- Glass Reflection Sheen Overlay -->
+                    <div class="id-glare-overlay absolute inset-0 rounded-3xl pointer-events-none overflow-hidden z-20"></div>
+
+                    <!-- Physical ID Card Surface (Photo + Cursive Name) -->
+                    <div class="id-card-surface rounded-2xl overflow-hidden p-3 sm:p-3.5 flex flex-col justify-between relative shadow-md">
+                        
+                        <!-- 1. Portrait Photo -->
+                        <div class="relative w-full aspect-[4/4.7] rounded-xl sm:rounded-2xl overflow-hidden bg-pink-50 shadow-sm border border-pink-100">
+                            <img src="images/rhea-about.jpg" alt="Rhea Mae Narag" class="w-full h-full object-cover object-center" onerror="this.src='images/rhea-photo.jpg'">
+                        </div>
+
+                        <!-- 2. Personal Name (Cursive Font) -->
+                        <div class="pt-3 pb-1 flex flex-col items-center justify-center">
+                            <h3 class="font-serif italic font-semibold text-2xl sm:text-3xl text-pink-600 dark:text-pink-400 tracking-wide text-center leading-tight select-none">
+                                Rhea Mae Narag
+                            </h3>
+                            <span class="text-[11px] font-mono text-slate-500 dark:text-slate-400 mt-0.5">Polytechnic University of the Philippines</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Floating Interactive Hint Tag -->
+                <div id="lanyard-drag-hint" class="absolute -bottom-9 left-1/2 -translate-x-1/2 whitespace-nowrap px-3.5 py-1 rounded-full bg-white/95 dark:bg-slate-900/90 text-pink-600 dark:text-pink-300 text-[11px] font-sans font-medium border border-pink-200 dark:border-pink-500/30 shadow-md flex items-center gap-1.5 pointer-events-none transition-opacity duration-500">
+                    <span class="text-pink-500">🌸</span>
+                    <span>Interactive ID • Try dragging me</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center relative z-10">
+            
+            <!-- Left Hero Content -->
+            <div class="lg:col-span-7 flex flex-col items-start gsap-hero-left">
+                
+                <!-- Status Badge -->
+                <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-pink-200 dark:border-pink-500/30 bg-white/80 dark:bg-black/30 backdrop-blur-md mb-6 shadow-sm">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-pink-500"></span>
+                    </span>
+                    <span class="text-xs font-mono text-pink-600 dark:text-pink-400 font-semibold tracking-wide uppercase">Open for Collaboration</span>
+                </div>
+                
+                <!-- Display Name -->
+                <h1 class="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight leading-[1.08] mb-3 text-slate-900 dark:text-white">
+                    Rhea Mae Narag
+                </h1>
+                
+                <!-- Signature Cursive Subtitle in Pastel Pink -->
+                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-serif italic font-medium text-pink-600 dark:text-pink-400 mb-6 leading-snug">
+                    Aspiring Frontend Developer 
+                </h2>
+                
+                <!-- Description -->
+                <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-xl mb-8 leading-relaxed font-normal">
+                    Dedicated Information Technology student at the Polytechnic University of the Philippines with a strong foundation in frontend engineering, UI/UX prototyping, relational databases, and enterprise networking.
+                </p>
+                
+                <!-- CTAs -->
+                <div class="flex flex-wrap items-center gap-3.5 w-full sm:w-auto">
+                    <!-- Resume Button -->
+                    <button id="open-resume-btn" class="btn-primary w-full sm:w-auto">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        View Resume
+                    </button>
+                    
+                    <!-- Contact Jump Button -->
+                    <a href="#contact" class="btn-secondary w-full sm:w-auto">
+                        <svg class="w-4 h-4 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        Contact Me
+                    </a>
+
+                    <!-- Copy Email Quick Action -->
+                    <button id="hero-copy-email-btn" class="btn-secondary !px-4 !py-3 w-full sm:w-auto text-xs font-mono text-slate-600 dark:text-slate-300 hover:text-pink-600 hover:border-pink-300" title="Copy email address" aria-label="Copy email address">
+                        <span class="flex items-center gap-1.5">
+                            <svg class="w-3.5 h-3.5 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                            rhea.narag22@gmail.com
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Hero Area (Dedicated Zone for Foreground Hanging ID Badge) -->
+            <div class="lg:col-span-5 gsap-hero-right flex justify-center items-center relative min-h-[460px] sm:min-h-[520px]">
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <a href="#about" class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-slate-400 hover:text-pink-500 transition-colors font-mono text-[10px] uppercase tracking-widest" aria-label="Scroll to About section">
+            <span>Explore</span>
+            <div class="w-4 h-7 rounded-full border border-pink-300/70 flex justify-center pt-1">
+                <div class="w-1 h-1.5 rounded-full bg-pink-500 animate-bounce"></div>
+            </div>
+        </a>
+    </section>
+
+    <!-- ==================== ABOUT SECTION ==================== -->
+    <section id="about" class="py-24 sm:py-32 px-4 sm:px-6 relative border-t border-pink-100/80 dark:border-white/10">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <!-- Left Portrait Showcase -->
+            <div class="lg:col-span-5 relative gsap-fade-right">
+                <div class="w-full max-w-md mx-auto relative perspective-1000 tilt-card">
+                    <!-- Pastel Accent Background Layer -->
+                    <div class="absolute inset-0 bg-gradient-to-tr from-pink-200/70 via-rose-100/50 to-pink-300/40 transform -rotate-2 rounded-3xl blur-sm"></div>
+                    
+                    <!-- Portrait Frame -->
+                    <div class="relative glass-card border border-pink-200/80 dark:border-pink-500/30 p-3.5 rounded-3xl overflow-hidden z-10 shadow-xl bg-white/90 dark:bg-slate-900/90">
+                        <img src="images/rhea-photo.jpg" alt="Rhea Mae Narag in Professional Attire" class="w-full aspect-[4/5] object-cover rounded-2xl transition-all duration-500 hover:scale-[1.02]">
+                        
+                        <!-- Floating Location Tag -->
+                        <div class="absolute bottom-6 right-6 glass-panel !bg-white/90 dark:!bg-black/80 text-slate-700 dark:text-white font-mono text-xs px-3.5 py-1.5 rounded-full border border-pink-200 dark:border-pink-500/30 shadow-md flex items-center gap-1.5">
+                            <svg class="w-3.5 h-3.5 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            Manila, Philippines
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Bio Content -->
+            <div class="lg:col-span-7 gsap-fade-left">
+                <!-- Section Label -->
+                <div class="inline-flex items-center gap-2 mb-3">
+                    <span class="text-pink-600 dark:text-pink-400 font-mono text-xs tracking-widest uppercase font-semibold">About Me</span>
+                    <div class="h-px bg-pink-300 dark:bg-pink-500/30 w-12"></div>
+                </div>
+
+                <h2 class="text-3xl sm:text-5xl font-sans font-bold mb-6 leading-tight text-slate-900 dark:text-white">
+                    Building with curiosity, <br class="hidden sm:inline"/>
+                    <span class="font-serif italic font-normal text-pink-600 dark:text-pink-400">designing with purpose.</span>
+                </h2>
+                
+                <div class="text-base sm:text-lg text-slate-600 dark:text-slate-300 space-y-4 font-normal leading-relaxed">
+                    <p>
+                        I’m a Junior Information Technology student at the <strong>Polytechnic University of the Philippines</strong> with a growing interest in frontend development and creating digital experiences that are both functional and easy to use.
+                    </p>
+                    <p>
+                        I enjoy turning ideas into working interfaces, exploring how systems work behind the scenes, and learning new technologies along the way. My experience includes frontend development, UI/UX design, database management, and network infrastructure, with a focus on continuously improving my skills through hands-on projects and collaboration.
+                    </p>
+                </div>
+
+                <!-- 4 Impact Highlight Cards -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 mt-8">
+                    <div class="glass-card p-4 rounded-2xl border border-pink-100 dark:border-pink-500/20 bg-white/70 dark:bg-white/5">
+                        <div class="font-sans text-xl font-bold text-slate-900 dark:text-white">PUP</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">BSIT Class '28</div>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl border border-pink-100 dark:border-pink-500/20 bg-white/70 dark:bg-white/5">
+                        <div class="font-sans text-xl font-bold text-pink-600 dark:text-pink-400">CONSISTENT</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">President's Lister</div>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl border border-pink-100 dark:border-pink-500/20 bg-white/70 dark:bg-white/5">
+                        <div class="font-sans text-xl font-bold text-slate-900 dark:text-white">SBFI</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">Merit Scholar</div>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl border border-pink-100 dark:border-pink-500/20 bg-white/70 dark:bg-white/5">
+                        <div class="font-sans text-xl font-bold text-pink-600 dark:text-pink-400">3+</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">Projects</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== EDUCATION SECTION ==================== -->
+    <section id="education" class="py-24 sm:py-32 px-4 sm:px-6 relative border-t border-pink-100/80 dark:border-white/10">
+        <div class="max-w-5xl mx-auto">
+            
+            <!-- Section Header -->
+            <div class="text-center mb-10 gsap-fade-up">
+                <div class="inline-flex items-center gap-2 mb-2.5">
+                    <span class="text-pink-600 dark:text-pink-400 font-mono text-xs tracking-widest uppercase font-semibold">Education &amp; Distinctions</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-sans font-bold text-slate-900 dark:text-white">Academic Background</h2>
+            </div>
+
+            <!-- University Student Academic Record Slip -->
+            <div class="glass-card p-6 sm:p-8 rounded-3xl border border-pink-200/90 dark:border-pink-500/20 bg-white/85 dark:bg-slate-900/80 shadow-md max-w-3xl mx-auto space-y-6 relative overflow-hidden">
+                
+                <!-- Subtle Top Accent Header Bar -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-pink-100 dark:border-white/10">
+                    <!-- University Emblem & Registrar Title -->
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-pink-100 via-rose-50 to-pink-200/60 text-pink-700 dark:from-pink-950/80 dark:to-slate-900 dark:text-pink-300 flex items-center justify-center font-bold text-sm border border-pink-300/60 dark:border-pink-500/30 shadow-xs shrink-0 tracking-wider">
+                            PUP
+                        </div>
+                        <div>
+                            <h3 class="text-xs sm:text-sm font-bold tracking-wider font-sans uppercase text-slate-900 dark:text-white leading-tight">
+                                Polytechnic University of the Philippines
+                            </h3>
+                            <span class="font-mono text-[10px] text-pink-600 dark:text-pink-400 uppercase tracking-widest font-semibold block mt-0.5">
+                                Office of the Registrar • Student Academic Record
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Authentic Barcode & Student Record Code -->
+                    <div class="flex flex-col items-start sm:items-end shrink-0">
+                        <svg class="h-5 w-28 text-slate-700 dark:text-slate-300 opacity-80" viewBox="0 0 120 24" fill="currentColor" aria-label="Student Record Barcode">
+                            <rect x="0" y="0" width="3" height="24"/>
+                            <rect x="5" y="0" width="1.5" height="24"/>
+                            <rect x="8" y="0" width="4" height="24"/>
+                            <rect x="14" y="0" width="2" height="24"/>
+                            <rect x="18" y="0" width="1" height="24"/>
+                            <rect x="21" y="0" width="3" height="24"/>
+                            <rect x="26" y="0" width="1.5" height="24"/>
+                            <rect x="30" y="0" width="4.5" height="24"/>
+                            <rect x="37" y="0" width="2" height="24"/>
+                            <rect x="41" y="0" width="1.5" height="24"/>
+                            <rect x="44" y="0" width="3" height="24"/>
+                            <rect x="49" y="0" width="2" height="24"/>
+                            <rect x="53" y="0" width="4" height="24"/>
+                            <rect x="59" y="0" width="1.5" height="24"/>
+                            <rect x="62" y="0" width="3" height="24"/>
+                            <rect x="67" y="0" width="2" height="24"/>
+                            <rect x="71" y="0" width="1" height="24"/>
+                            <rect x="74" y="0" width="4" height="24"/>
+                            <rect x="80" y="0" width="2" height="24"/>
+                            <rect x="84" y="0" width="1.5" height="24"/>
+                            <rect x="87" y="0" width="3.5" height="24"/>
+                            <rect x="93" y="0" width="2" height="24"/>
+                            <rect x="97" y="0" width="1" height="24"/>
+                            <rect x="100" y="0" width="4" height="24"/>
+                            <rect x="106" y="0" width="2" height="24"/>
+                            <rect x="110" y="0" width="3" height="24"/>
+                            <rect x="115" y="0" width="2" height="24"/>
+                            <rect x="118" y="0" width="2" height="24"/>
+                        </svg>
+                        <span class="font-mono text-[9px] tracking-widest text-slate-400 dark:text-slate-500 block mt-0.5">
+                            REC-2024-BSIT-MNL
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Degree Program & Status Strip -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 rounded-2xl bg-pink-50/50 dark:bg-white/[0.02] border border-pink-100 dark:border-white/5 items-center">
+                    <div class="md:col-span-2">
+                        <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400 dark:text-slate-500 font-semibold block mb-0.5">
+                            Degree &amp; College
+                        </span>
+                        <h4 class="text-lg sm:text-xl font-bold font-sans text-slate-900 dark:text-white leading-snug">
+                            Bachelor of Science in Information Technology
+                        </h4>
+                        <span class="text-xs text-pink-600 dark:text-pink-400 font-medium">
+                            College of Computer and Information Sciences (CCIS)
+                        </span>
+                    </div>
+                    <div class="md:text-right flex md:flex-col justify-between items-start md:items-end gap-1">
+                        <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400 dark:text-slate-500 font-semibold block">
+                            Academic Status
+                        </span>
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300 border border-emerald-200/70">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            Regular Student
+                        </span>
+                        <span class="text-xs font-mono text-slate-700 dark:text-slate-300 font-semibold mt-0.5">
+                            Graduation Year: <strong class="text-pink-600 dark:text-pink-400">2028</strong>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Distinctions Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    
+                    <!-- Honors Slip -->
+                    <div class="p-4 sm:p-5 rounded-2xl bg-white/70 dark:bg-slate-900/60 border border-pink-100 dark:border-pink-500/20 shadow-xs flex items-start gap-3.5 group hover:border-pink-300 transition-colors">
+                        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950/40 dark:text-amber-300 flex items-center justify-center shrink-0 border border-amber-200/80 text-xl shadow-xs">
+                            🏆
+                        </div>
+                        <div class="flex-1">
+                            <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400 dark:text-slate-500 font-semibold block mb-0.5">
+                                Academic Honors
+                            </span>
+                            <h4 class="text-base font-bold text-slate-900 dark:text-white leading-tight">
+                                Consistent President's Lister
+                            </h4>
+                            <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300 border border-rose-200/80 my-1">
+                                1st and 2nd Year
+                            </span>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
+                                Conferred for maintaining top cumulative GPA honor roll standing across all computing semesters.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Scholarship Slip -->
+                    <div class="p-4 sm:p-5 rounded-2xl bg-white/70 dark:bg-slate-900/60 border border-pink-100 dark:border-pink-500/20 shadow-xs flex items-start gap-3.5 group hover:border-pink-300 transition-colors">
+                        <div class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 dark:bg-pink-950/60 dark:text-pink-400 flex items-center justify-center shrink-0 border border-pink-200/80 text-xl shadow-xs">
+                            🎖️
+                        </div>
+                        <div class="flex-1">
+                            <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400 dark:text-slate-500 font-semibold block mb-0.5">
+                                Scholastic Grant
+                            </span>
+                            <h4 class="text-base font-bold text-slate-900 dark:text-white leading-tight">
+                                Security Bank Foundation Inc. (SBFI) Scholar
+                            </h4>
+                            <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold bg-pink-100 text-pink-700 dark:bg-pink-950/60 dark:text-pink-300 border border-pink-200/80 my-1">
+                                Merit Scholar
+                            </span>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
+                                Competitively awarded corporate academic scholarship recognizing scholastic excellence &amp; leadership potential.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Bottom Verification Footer Strip -->
+                <div class="pt-4 border-t border-pink-100 dark:border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+                    <div class="flex items-center gap-2 text-slate-500 dark:text-slate-400">
+                        <span class="text-emerald-500 font-bold">✓</span>
+                        <span>OFFICIAL ENROLLMENT RECORD • POLYTECHNIC UNIVERSITY OF THE PHILIPPINES</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="px-2.5 py-0.5 rounded border border-dashed border-pink-400/60 text-pink-600 dark:text-pink-400 text-[10px] font-bold tracking-wider uppercase">
+                            REGISTRAR VERIFIED
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== TECHNICAL SKILLS SECTION ==================== -->
+    <section id="skills" class="py-24 sm:py-32 px-4 sm:px-6 relative border-t border-pink-100/80 dark:border-white/10 overflow-hidden">
+        <div class="max-w-7xl mx-auto relative z-10">
+            
+            <!-- Section Header -->
+            <div class="text-center mb-12 gsap-fade-up">
+                <div class="inline-flex items-center gap-2 mb-3">
+                    <span class="text-pink-600 dark:text-pink-400 font-mono text-xs tracking-widest uppercase font-semibold">Capabilities</span>
+                </div>
+                <h2 class="text-3xl sm:text-5xl font-sans font-bold text-slate-900 dark:text-white">Skills &amp; Competencies</h2>
+                <p class="text-slate-500 dark:text-slate-400 font-normal text-sm sm:text-base max-w-xl mx-auto mt-3">
+                    Proficiency matrix spanning modern frontend engineering, database architectures, and systems infrastructure.
+                </p>
+
+                <!-- Filter Controls -->
+                <div class="flex flex-wrap justify-center gap-2 mt-8" id="skills-filter-container">
+                    <button class="filter-tab active" data-filter="all">All Skills</button>
+                    <button class="filter-tab" data-filter="programming">Languages</button>
+                    <button class="filter-tab" data-filter="frontend">Frontend &amp; UI/UX</button>
+                    <button class="filter-tab" data-filter="backend">Databases &amp; APIs</button>
+                    <button class="filter-tab" data-filter="systems">Networking &amp; Tools</button>
+                </div>
+            </div>
+
+            <!-- Skills Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="skills-grid">
+                
+                <!-- Category 1: Languages -->
+                <div class="glass-card p-6 rounded-3xl skill-card relative overflow-hidden group border border-pink-100" data-category="programming">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-10 h-10 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center font-mono font-bold text-sm border border-pink-200">
+                            &lt;/&gt;
+                        </div>
+                        <span class="text-xs text-pink-600 font-medium">Core Stack</span>
+                    </div>
+                    <h3 class="text-lg font-bold font-sans text-slate-900 dark:text-white mb-4">Programming</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-pill">Python</span>
+                        <span class="skill-pill">JavaScript (ES6+)</span>
+                        <span class="skill-pill">Java</span>
+                        <span class="skill-pill">C</span>
+                        <span class="skill-pill">SQL</span>
+                        <span class="skill-pill">R</span>
+                        <span class="skill-pill">COBOL</span>
+                    </div>
+                </div>
+
+                <!-- Category 2: Frontend & UI/UX -->
+                <div class="glass-card p-6 rounded-3xl skill-card relative overflow-hidden group border border-pink-100" data-category="frontend">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-10 h-10 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center font-mono font-bold text-sm border border-pink-200">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <span class="text-xs text-pink-600 font-medium">Design &amp; UI</span>
+                    </div>
+                    <h3 class="text-lg font-bold font-sans text-slate-900 dark:text-white mb-4">Frontend &amp; UI/UX</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-pill">HTML5</span>
+                        <span class="skill-pill">CSS3</span>
+                        <span class="skill-pill">Tailwind CSS</span>
+                        <span class="skill-pill">Figma Prototyping</span>
+                        <span class="skill-pill">HCI Principles</span>
+                        <span class="skill-pill">User-Centered Design</span>
+                        <span class="skill-pill">Responsive Design</span>
+                    </div>
+                </div>
+
+                <!-- Category 3: Databases & Backend -->
+                <div class="glass-card p-6 rounded-3xl skill-card relative overflow-hidden group border border-pink-100" data-category="backend">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-10 h-10 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center font-mono font-bold text-sm border border-pink-200">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
+                        </div>
+                        <span class="text-xs text-pink-600 font-medium">Data Logic</span>
+                    </div>
+                    <h3 class="text-lg font-bold font-sans text-slate-900 dark:text-white mb-4">Databases &amp; APIs</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-pill">MySQL</span>
+                        <span class="skill-pill">Python Flask</span>
+                        <span class="skill-pill">Normalization (1NF–3NF)</span>
+                        <span class="skill-pill">ERD Modeling</span>
+                        <span class="skill-pill">REST APIs</span>
+                        <span class="skill-pill">Data Integrity</span>
+                    </div>
+                </div>
+
+                <!-- Category 4: Systems & Tools -->
+                <div class="glass-card p-6 rounded-3xl skill-card relative overflow-hidden group border border-pink-100" data-category="systems">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-10 h-10 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center font-mono font-bold text-sm border border-pink-200">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                        </div>
+                        <span class="text-xs text-pink-600 font-medium">Infrastructure</span>
+                    </div>
+                    <h3 class="text-lg font-bold font-sans text-slate-900 dark:text-white mb-4">Networking &amp; Tools</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-pill">Cisco Packet Tracer</span>
+                        <span class="skill-pill">OSPF Routing</span>
+                        <span class="skill-pill">Cisco ASA 5506-X</span>
+                        <span class="skill-pill">Git &amp; GitHub</span>
+                        <span class="skill-pill">CLI / Bash</span>
+                        <span class="skill-pill">Network Design</span>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- Soft Skills Process Flow -->
+            <div class="mt-16 pt-12 border-t border-pink-100 dark:border-white/10">
+                <div class="flex flex-wrap justify-between items-center gap-4 text-xs font-sans font-semibold text-slate-600 dark:text-slate-400">
+                    <div class="flex flex-col items-center hover:text-pink-600 transition-colors group">
+                        <span class="w-10 h-10 rounded-full border border-pink-200 bg-white dark:bg-slate-800 text-pink-600 flex items-center justify-center mb-2 shadow-sm group-hover:bg-pink-50">01</span>
+                        Empathize &amp; Define
+                    </div>
+                    <div class="flex-1 h-px bg-pink-200 dark:bg-pink-500/30 hidden md:block"></div>
+                    <div class="flex flex-col items-center hover:text-pink-600 transition-colors group">
+                        <span class="w-10 h-10 rounded-full border border-pink-200 bg-white dark:bg-slate-800 text-pink-600 flex items-center justify-center mb-2 shadow-sm group-hover:bg-pink-50">02</span>
+                        Analyze Logic
+                    </div>
+                    <div class="flex-1 h-px bg-pink-200 dark:bg-pink-500/30 hidden md:block"></div>
+                    <div class="flex flex-col items-center hover:text-pink-600 transition-colors group">
+                        <span class="w-10 h-10 rounded-full border border-pink-200 bg-white dark:bg-slate-800 text-pink-600 flex items-center justify-center mb-2 shadow-sm group-hover:bg-pink-50">03</span>
+                        Prototype &amp; Design
+                    </div>
+                    <div class="flex-1 h-px bg-pink-200 dark:bg-pink-500/30 hidden md:block"></div>
+                    <div class="flex flex-col items-center hover:text-pink-600 transition-colors group">
+                        <span class="w-10 h-10 rounded-full border border-pink-200 bg-white dark:bg-slate-800 text-pink-600 flex items-center justify-center mb-2 shadow-sm group-hover:bg-pink-50">04</span>
+                        Engineer &amp; Test
+                    </div>
+                    <div class="flex-1 h-px bg-pink-200 dark:bg-pink-500/30 hidden md:block"></div>
+                    <div class="flex flex-col items-center hover:text-pink-600 transition-colors group">
+                        <span class="w-10 h-10 rounded-full border border-pink-200 bg-white dark:bg-slate-800 text-pink-600 flex items-center justify-center mb-2 shadow-sm group-hover:bg-pink-50">05</span>
+                        Iterate &amp; Polish
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ==================== FEATURED PROJECTS SECTION ==================== -->
+    <section id="projects" class="py-24 sm:py-32 px-4 sm:px-6 relative border-t border-pink-100/80 dark:border-white/10 overflow-hidden">
+        <div class="max-w-7xl mx-auto relative z-10">
+            
+            <!-- Section Header -->
+            <div class="mb-12 gsap-fade-up">
+                <div class="inline-flex items-center gap-2 mb-3">
+                    <span class="text-pink-600 dark:text-pink-400 font-mono text-xs tracking-widest uppercase font-semibold">Selected Works</span>
+                </div>
+                <h2 class="text-3xl sm:text-5xl font-sans font-bold text-slate-900 dark:text-white">Featured Projects</h2>
+                <p class="text-slate-500 dark:text-slate-400 font-normal text-sm sm:text-base max-w-xl mt-3">
+                    Hands-on projects covering full-stack database engineering, user-centered interface design, and secure network infrastructure.
+                </p>
+            </div>
+
+            <!-- Swiper Carousel Container -->
+            <div class="swiper projects-swiper overflow-visible">
+                <div class="swiper-wrapper">
+                    
+                    <!-- Project 1: SALN Submission Portal -->
+                    <div class="swiper-slide">
+                        <div class="glass-card rounded-3xl overflow-hidden flex flex-col h-full border border-pink-100 dark:border-white/10 group bg-white/85 dark:bg-slate-900/80 shadow-sm hover:shadow-xl transition-all duration-300">
+                            <!-- Project Image Header -->
+                            <div class="h-60 sm:h-64 relative overflow-hidden border-b border-pink-100 dark:border-white/10 bg-pink-50/40 dark:bg-slate-950">
+                                <img src="images/saln.jpg" alt="SALN Automated Submission Portal Screenshot" class="w-full h-full object-cover object-top transform group-hover:scale-105 transition-transform duration-500" onerror="this.src='assets/saln.jpg'">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60 pointer-events-none"></div>
+                                <span class="absolute bottom-3.5 left-4 text-[11px] font-mono px-3 py-0.5 rounded-full bg-white/90 dark:bg-black/80 text-pink-700 dark:text-pink-300 font-semibold backdrop-blur-md border border-pink-200 shadow-sm">
+                                    Full-Stack Web App
+                                </span>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="p-6 sm:p-8 flex flex-col flex-1 justify-between">
+                                <div>
+                                    <div class="flex flex-wrap gap-2 mb-4 font-mono text-[11px]">
+                                        <span class="px-2.5 py-0.5 rounded-full bg-pink-100 text-pink-700 border border-pink-200">MySQL</span>
+                                        <span class="px-2.5 py-0.5 rounded-full bg-pink-100 text-pink-700 border border-pink-200">Python Flask</span>
+                                        <span class="px-2.5 py-0.5 rounded-full bg-pink-100 text-pink-700 border border-pink-200">JavaScript</span>
+                                    </div>
+                                    <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white font-sans mb-3 group-hover:text-pink-600 transition-colors">
+                                        SALN Submission Portal
+                                    </h3>
+                                    <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-6">
+                                        Co-developed a full-stack web application designed to collect and process Sworn Statement of Assets, Liabilities, and Net Worth data with real-time arithmetic validation and secure database storage.
+                                    </p>
+                                </div>
+                                <button class="open-case-study-btn btn-secondary w-full text-xs !py-2.5 justify-center" data-project="saln">
+                                    View Project Case Study ➜
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 2: University Room Booking UI -->
+                    <div class="swiper-slide">
+                        <div class="glass-card rounded-3xl overflow-hidden flex flex-col h-full border border-pink-100 dark:border-white/10 group bg-white/85 dark:bg-slate-900/80 shadow-sm hover:shadow-xl transition-all duration-300">
+                            <!-- Project Image Header -->
+                            <div class="h-60 sm:h-64 relative overflow-hidden border-b border-pink-100 dark:border-white/10 bg-amber-50/40 dark:bg-slate-950">
+                                <img src="images/pupwesto.jpg" alt="PUPwesto Room Booking UI Prototype" class="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-500" onerror="this.src='assets/pupwesto.jpg'">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60 pointer-events-none"></div>
+                                <span class="absolute bottom-3.5 left-4 text-[11px] font-mono px-3 py-0.5 rounded-full bg-white/90 dark:bg-black/80 text-pink-700 dark:text-pink-300 font-semibold backdrop-blur-md border border-pink-200 shadow-sm">
+                                    PUPwesto • UI/UX
+                                </span>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="p-6 sm:p-8 flex flex-col flex-1 justify-between">
+                                <div>
+                                    <div class="flex flex-wrap gap-2 mb-4 font-mono text-[11px]">
+                                        <span class="px-2.5 py-0.5 rounded-full bg-pink-100 text-pink-700 border border-pink-200">Figma</span>
+                                        <span class="px-2.5 py-0.5 rounded-full bg-pink-100 text-pink-700 border border-pink-200">UI/UX Design</span>
+                                        <span class="px-2.5 py-0.5 rounded-full bg-pink-100 text-pink-700 border border-pink-200">HCI Principles</span>
+                                    </div>
+                                    <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white font-sans mb-3 group-hover:text-pink-600 transition-colors">
+                                        University Room-Booking UI
+                                    </h3>
+                                    <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-6">
+                                        Applied User-Centered Design and Human-Computer Interaction heuristics to prototype PUPwesto, an intuitive campus reservation and visual laboratory scheduling mobile experience.
+                                    </p>
+                                </div>
+                                <button class="open-case-study-btn btn-secondary w-full text-xs !py-2.5 justify-center" data-project="room-booking">
+                                    View Project Case Study ➜
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 3: Enterprise Network Topology -->
+                    <div class="swiper-slide">
+                        <div class="glass-card rounded-3xl overflow-hidden flex flex-col h-full border border-pink-100 dark:border-white/10 group bg-white/85 dark:bg-slate-900/80 shadow-sm hover:shadow-xl transition-all duration-300">
+                            <!-- Project Image Header -->
+                            <div class="h-60 sm:h-64 relative overflow-hidden border-b border-pink-100 dark:border-white/10 bg-slate-900 flex items-center justify-center p-2">
+                                <img src="images/topology.png" alt="Enterprise Network Topology Diagram in Cisco Packet Tracer" class="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-500" onerror="this.src='assets/topology.png'">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60 pointer-events-none"></div>
+                                <span class="absolute bottom-3.5 left-4 text-[11px] font-mono px-3 py-0.5 rounded-full bg-white/90 dark:bg-black/80 text-pink-700 dark:text-pink-300 font-semibold backdrop-blur-md border border-pink-200 shadow-sm">
+                                    Cisco PT Architecture
+                                </span>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="p-6 sm:p-8 flex flex-col flex-1 justify-between">
+                                <div>
+                                    <div class="flex flex-wrap gap-2 mb-4 font-mono text-[11px]">
+                                        <span class="px-2.5 py-0.5 rounded-full bg-pink-100 text-pink-700 border border-pink-200">Cisco Packet Tracer</span>
+                                        <span class="px-2.5 py-0.5 rounded-full bg-pink-100 text-pink-700 border border-pink-200">OSPF</span>
+                                        <span class="px-2.5 py-0.5 rounded-full bg-pink-100 text-pink-700 border border-pink-200">ASA Firewall</span>
+                                    </div>
+                                    <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white font-sans mb-3 group-hover:text-pink-600 transition-colors">
+                                        Enterprise Network Topology
+                                    </h3>
+                                    <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-6">
+                                        Designed and simulated an enterprise network infrastructure with dual-core routing redundancy, dynamic OSPF routing, and perimeter boundary packet inspection.
+                                    </p>
+                                </div>
+                                <button class="open-case-study-btn btn-secondary w-full text-xs !py-2.5 justify-center" data-project="network">
+                                    View Project Case Study ➜
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Swiper Pagination Dots -->
+                <div class="swiper-pagination mt-8 !static flex justify-center"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ==================== CONTACT SECTION ==================== -->
+    <section id="contact" class="py-24 sm:py-32 px-4 sm:px-6 relative border-t border-pink-100/80 dark:border-white/10">
+        <div class="max-w-6xl mx-auto relative z-10">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                
+                <!-- Left Contact Info -->
+                <div class="lg:col-span-5 gsap-fade-right space-y-6">
+                    <div>
+                        <div class="inline-flex items-center gap-2 mb-3">
+                            <span class="text-pink-600 dark:text-pink-400 font-mono text-xs tracking-widest uppercase font-semibold">Get In Touch</span>
+                        </div>
+                        <h2 class="text-3xl sm:text-5xl font-sans font-bold text-slate-900 dark:text-white leading-tight">
+                            Let's build something <br>
+                            <span class="font-serif italic font-normal text-pink-600 dark:text-pink-400">meaningful together.</span>
+                        </h2>
+                        <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed mt-4">
+                            I am actively seeking 2025–2026 technical internship opportunities in Frontend Engineering, UI/UX Development, and Applied AI Solutions. Feel free to reach out directly.
+                        </p>
+                    </div>
+
+                    <!-- Direct Contact Cards -->
+                    <div class="space-y-3.5">
+                        <!-- Email Card with Copy Trigger -->
+                        <div class="glass-card p-4 rounded-2xl flex items-center justify-between group border border-pink-100 dark:border-white/10 hover:border-pink-300 transition-colors bg-white/80 dark:bg-white/5 shadow-sm">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-10 h-10 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center border border-pink-200">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                </div>
+                                <div>
+                                    <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 uppercase tracking-wider">Direct Email</div>
+                                    <a href="mailto:rhea.narag22@gmail.com" class="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-pink-600 transition-colors">
+                                        rhea.narag22@gmail.com
+                                    </a>
+                                </div>
+                            </div>
+                            <button id="copy-email-btn" class="btn-icon !w-8 !h-8 text-xs font-mono text-slate-400 hover:text-pink-500" title="Copy Email to Clipboard" aria-label="Copy Email">
+                                📋
+                            </button>
+                        </div>
+
+                        <!-- LinkedIn Card -->
+                        <a href="https://linkedin.com/in/rhea-mae-narag-192891393" target="_blank" rel="noopener noreferrer" class="glass-card p-4 rounded-2xl flex items-center justify-between group border border-pink-100 dark:border-white/10 hover:border-pink-300 transition-colors block bg-white/80 dark:bg-white/5 shadow-sm">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-10 h-10 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center border border-pink-200">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                                </div>
+                                <div>
+                                    <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 uppercase tracking-wider">Professional Profile</div>
+                                    <div class="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-pink-600 transition-colors">
+                                        linkedin.com/in/rhea-mae-narag
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="text-slate-400 group-hover:text-pink-600 transition-colors text-xs font-mono">➜</span>
+                        </a>
+
+                        <!-- Location & University Status -->
+                        <div class="glass-card p-4 rounded-2xl flex items-center gap-3.5 border border-pink-100 dark:border-white/10 bg-white/80 dark:bg-white/5 shadow-sm">
+                            <div class="w-10 h-10 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center border border-pink-200">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z"></path></svg>
+                            </div>
+                            <div>
+                                <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 uppercase tracking-wider">Based in</div>
+                                <div class="text-sm font-semibold text-slate-900 dark:text-white">
+                                    Manila, Philippines (PUP Main Campus)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Contact Form -->
+                <div class="lg:col-span-7 gsap-fade-left">
+                    <div class="glass-card p-6 sm:p-8 rounded-3xl border border-pink-100 dark:border-white/10 shadow-xl relative bg-white/90 dark:bg-slate-900/90">
+                        <div class="flex items-center justify-between border-b border-pink-100 dark:border-white/10 pb-4 mb-6">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-pink-500"></span>
+                                <h3 class="font-sans text-sm font-bold text-slate-900 dark:text-white">Send a Direct Message</h3>
+                            </div>
+                            <span class="text-xs font-mono text-pink-600">Typically replies within 24h</span>
+                        </div>
+
+                        <form id="contact-form" class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="contact-name" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Your Name *</label>
+                                    <input type="text" id="contact-name" required placeholder="Alex Morgan" class="w-full bg-pink-50/50 dark:bg-slate-800 border border-pink-100 dark:border-white/10 focus:border-pink-400 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white outline-none transition-colors">
+                                </div>
+                                <div>
+                                    <label for="contact-email" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Your Email *</label>
+                                    <input type="email" id="contact-email" required placeholder="alex@company.com" class="w-full bg-pink-50/50 dark:bg-slate-800 border border-pink-100 dark:border-white/10 focus:border-pink-400 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white outline-none transition-colors">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="contact-subject" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Subject</label>
+                                <input type="text" id="contact-subject" placeholder="Frontend Internship / Project Collaboration" class="w-full bg-pink-50/50 dark:bg-slate-800 border border-pink-100 dark:border-white/10 focus:border-pink-400 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white outline-none transition-colors">
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-center mb-1.5">
+                                    <label for="contact-message" class="block text-xs font-semibold text-slate-700 dark:text-slate-300">Message *</label>
+                                    <span id="char-counter" class="font-mono text-[11px] text-slate-400">0 / 500</span>
+                                </div>
+                                <textarea id="contact-message" required maxlength="500" rows="5" placeholder="Share your project goals, internship inquiry, or say hello..." class="w-full bg-pink-50/50 dark:bg-slate-800 border border-pink-100 dark:border-white/10 focus:border-pink-400 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white outline-none transition-colors resize-none"></textarea>
+                            </div>
+
+                            <button type="submit" id="submit-form-btn" class="btn-primary w-full !py-3 flex items-center justify-center gap-2 text-sm shadow-md">
+                                <span id="submit-btn-text">Send Message 🌸</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="py-12 border-t border-pink-100 dark:border-white/10 bg-white/70 dark:bg-black/40 relative z-10 text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-pink-500"></span>
+                <span>© 2026 Rhea Mae Narag • Designed &amp; engineered with care.</span>
+            </div>
+            <div class="flex items-center gap-4 text-slate-500 dark:text-slate-400 font-medium">
+                <a href="#home" class="hover:text-pink-600 transition-colors">Home</a>
+                <span>•</span>
+                <a href="#about" class="hover:text-pink-600 transition-colors">About</a>
+                <span>•</span>
+                <a href="#skills" class="hover:text-pink-600 transition-colors">Skills</a>
+                <span>•</span>
+                <a href="#projects" class="hover:text-pink-600 transition-colors">Projects</a>
+                <span>•</span>
+                <a href="#contact" class="hover:text-pink-600 transition-colors">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
+    <!-- Core Portfolio Interactions -->
+    <script src="js/script.js"></script>
+</body>
+</html>

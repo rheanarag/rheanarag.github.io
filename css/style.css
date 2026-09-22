@@ -1,0 +1,837 @@
+/* ==========================================================================
+   RHEA PORTFOLIO - DESIGN SYSTEM & COMPONENT STYLES
+   Soft Pastel Pink & Blush Aesthetic • Elegant Modern Editorial Experience
+   ========================================================================== */
+
+/* --- 1. Design Tokens & CSS Variables --- */
+:root {
+  --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Pastel Pink & Blush Palette */
+  --color-pink: #e85c78;
+  --color-pink-hover: #d54060;
+  --color-pink-soft: #f4728b;
+  --color-pink-pastel: #fecdd6;
+  --color-pink-light: #fff1f4;
+  --color-pink-glow: rgba(232, 92, 120, 0.22);
+  --color-pink-subtle: rgba(248, 114, 139, 0.1);
+  --color-pink-border: rgba(232, 92, 120, 0.2);
+
+  /* Light Mode Defaults - Soft Airy Warm Blush */
+  --bg-primary: #fff7f9;
+  --bg-surface: rgba(255, 255, 255, 0.85);
+  --bg-surface-elevated: #ffffff;
+  --bg-card: rgba(255, 255, 255, 0.82);
+  --border-subtle: rgba(232, 92, 120, 0.15);
+  --border-highlight: rgba(232, 92, 120, 0.35);
+  --text-primary: #2d1822;
+  --text-secondary: #5e3c48;
+  --text-muted: #8b6b77;
+  --nav-bg: rgba(255, 255, 255, 0.88);
+  --shadow-card: 0 10px 30px -5px rgba(232, 92, 120, 0.08), 0 2px 8px -2px rgba(0, 0, 0, 0.03);
+  --shadow-glow: 0 0 25px rgba(248, 114, 139, 0.2);
+  --shadow-floating: 0 10px 32px -6px rgba(232, 92, 120, 0.12), 0 2px 8px -1px rgba(0, 0, 0, 0.04);
+}
+
+html.dark {
+  /* Subtle Muted Berry-Plum Dark Mode (Optional Toggle) */
+  --bg-primary: #150f14;
+  --bg-surface: rgba(28, 20, 27, 0.88);
+  --bg-surface-elevated: rgba(38, 26, 36, 0.95);
+  --bg-card: rgba(30, 21, 29, 0.78);
+  --border-subtle: rgba(248, 114, 139, 0.16);
+  --border-highlight: rgba(248, 114, 139, 0.4);
+  --text-primary: #fdf2f5;
+  --text-secondary: #d3b4be;
+  --text-muted: #9f838d;
+  --nav-bg: rgba(24, 17, 23, 0.9);
+  --shadow-card: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 35px rgba(232, 92, 120, 0.22);
+  --shadow-floating: 0 12px 36px -8px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(248, 114, 139, 0.1);
+}
+
+/* --- 2. Base & Typography Resets --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: #fff7f9;
+  background-image: url('../images/webbg.jpg');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: var(--text-primary);
+  transition: background-color 0.4s ease, color 0.4s ease;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.7;
+}
+
+html.dark body {
+  background-color: var(--bg-primary);
+  background-image: none;
+}
+
+p {
+  text-align: left;
+  line-height: 1.75;
+}
+
+.text-justify {
+  text-align: left;
+  line-height: 1.75;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  letter-spacing: -0.025em;
+  color: var(--text-primary);
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.font-cursive {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 600;
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+.font-display {
+  font-family: var(--font-sans);
+}
+
+/* --- 3. Ambient Aesthetic Pastel Background --- */
+.aesthetic-bg-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  background-color: #fff7f9;
+  background-image: url('../images/webbg.jpg');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+html.dark .aesthetic-bg-canvas {
+  background-color: var(--bg-primary);
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(232, 92, 120, 0.08) 0%, transparent 65%),
+    radial-gradient(circle at 85% 90%, rgba(248, 114, 139, 0.04) 0%, transparent 50%);
+}
+
+.aesthetic-bg-pattern {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(232, 92, 120, 0.12) 1.2px, transparent 1.2px);
+  background-size: 26px 26px;
+  mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.8) 0%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.8) 0%, transparent 75%);
+  opacity: 0.6;
+}
+
+html.dark .aesthetic-bg-pattern {
+  background-image: radial-gradient(rgba(248, 114, 139, 0.08) 1.2px, transparent 1.2px);
+  opacity: 0.35;
+}
+
+#cursor-glow {
+  display: none !important;
+}
+
+/* --- 4. Floating Topbar Component --- */
+.floating-navbar {
+  background: var(--nav-bg);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-floating);
+  border-radius: 9999px;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease,
+              box-shadow 0.25s ease,
+              background-color 0.25s ease;
+}
+
+.floating-navbar.scrolled {
+  border-color: var(--border-highlight);
+  box-shadow: 0 12px 36px -6px rgba(232, 92, 120, 0.16), 0 2px 8px -1px rgba(0, 0, 0, 0.04);
+}
+
+.floating-mobile-menu {
+  background: var(--bg-surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
+  border-radius: 1.5rem;
+}
+
+/* --- 5. Custom Glassmorphism Surfaces --- */
+.glass-panel {
+  background: var(--bg-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
+}
+
+.glass-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.3s ease, 
+              box-shadow 0.3s ease;
+}
+
+.glass-card:hover {
+  border-color: var(--border-highlight);
+  box-shadow: var(--shadow-glow), var(--shadow-card);
+}
+
+/* --- 6. Custom Pastel Heart Cursor System --- */
+@media (hover: hover) and (pointer: fine) {
+  body.custom-cursor-active,
+  body.custom-cursor-active a,
+  body.custom-cursor-active button,
+  body.custom-cursor-active input,
+  body.custom-cursor-active textarea,
+  body.custom-cursor-active select,
+  body.custom-cursor-active label,
+  body.custom-cursor-active [role="button"],
+  body.custom-cursor-active .tilt-card,
+  body.custom-cursor-active #hanging-badge {
+    cursor: none !important;
+  }
+}
+
+#heart-cursor,
+#heart-cursor-follower {
+  will-change: transform;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+#heart-cursor svg {
+  transform-origin: center center;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease;
+}
+
+#heart-cursor.cursor-hover svg {
+  transform: rotate(-8deg) scale(1.3);
+  filter: drop-shadow(0 0 10px rgba(232, 92, 120, 0.55));
+}
+
+#heart-cursor-follower.cursor-hover .heart-follower-ring {
+  transform: scale(1.5);
+  border-color: rgba(232, 92, 120, 0.6);
+  background: rgba(254, 205, 218, 0.25);
+  box-shadow: 0 0 18px rgba(232, 92, 120, 0.35);
+}
+
+#heart-cursor.cursor-click svg {
+  transform: rotate(-15deg) scale(0.85);
+  filter: drop-shadow(0 0 14px rgba(232, 92, 120, 0.7));
+}
+
+#heart-cursor-follower.cursor-click .heart-follower-ring {
+  transform: scale(0.8);
+  border-color: rgba(232, 92, 120, 0.8);
+  background: rgba(248, 114, 139, 0.3);
+}
+
+.micro-heart-particle {
+  position: absolute;
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation: heart-float-fade 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes heart-float-fade {
+  0% {
+    opacity: 0.95;
+    transform: translate(-50%, -50%) scale(0.6) translateY(0) rotate(0deg);
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.2) translateY(-32px) rotate(var(--rot, 15deg));
+  }
+}
+
+/* --- 7. Interactive Navigation Links --- */
+.nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: color 0.25s ease, background-color 0.2s ease;
+  padding: 0.45rem 0.9rem;
+  border-radius: 9999px;
+}
+
+.nav-link:hover {
+  color: var(--color-pink);
+  background-color: var(--color-pink-subtle);
+}
+
+.nav-link.active {
+  color: var(--color-pink);
+  font-weight: 600;
+  background-color: var(--color-pink-subtle);
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--color-pink);
+  box-shadow: 0 0 6px var(--color-pink-glow);
+  transform: translateX(-50%);
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 2px;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 50%;
+}
+
+/* --- 8. Button System & Micro-interactions --- */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.7rem;
+  background: linear-gradient(135deg, #f08298 0%, #e85c78 100%);
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 6px 20px -3px rgba(232, 92, 120, 0.35);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.2s ease,
+              filter 0.2s ease;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.05);
+  box-shadow: 0 8px 26px 0 rgba(232, 92, 120, 0.48);
+  transform: translateY(-2px);
+}
+
+.btn-primary:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 10px rgba(232, 92, 120, 0.25);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.6rem;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: 9999px;
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 4px 14px -2px rgba(232, 92, 120, 0.08);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.2s ease,
+              background-color 0.2s ease,
+              color 0.2s ease;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+}
+
+html.dark .btn-secondary {
+  background: rgba(38, 26, 36, 0.7);
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+  background: #fff0f3;
+  border-color: var(--color-pink);
+  color: var(--color-pink);
+  transform: translateY(-2px);
+}
+
+html.dark .btn-secondary:hover {
+  background: rgba(65, 30, 45, 0.6);
+}
+
+.btn-secondary:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.btn-icon:hover {
+  border-color: var(--color-pink);
+  color: var(--color-pink);
+  background: var(--color-pink-subtle);
+  transform: scale(1.06);
+}
+
+.btn-icon:active {
+  transform: scale(0.94);
+}
+
+/* Accessibility Focus States */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-pink);
+  outline-offset: 2px;
+}
+
+/* --- 9. Skills & Badges System --- */
+.skill-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.35rem 0.85rem;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(232, 92, 120, 0.18);
+  color: #5e3c48;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: default;
+}
+
+html.dark .skill-pill {
+  background: rgba(38, 26, 36, 0.8);
+  color: #fdf2f5;
+  border-color: rgba(248, 114, 139, 0.2);
+}
+
+.skill-pill:hover {
+  border-color: var(--color-pink);
+  color: var(--color-pink);
+  background: #fff0f3;
+  transform: translateY(-1px);
+}
+
+html.dark .skill-pill:hover {
+  background: rgba(65, 30, 45, 0.6);
+}
+
+.filter-tab {
+  padding: 0.5rem 1.15rem;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--border-subtle);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+html.dark .filter-tab {
+  background: rgba(38, 26, 36, 0.6);
+}
+
+.filter-tab:hover {
+  color: var(--color-pink);
+  background: #fff0f3;
+}
+
+html.dark .filter-tab:hover {
+  background: rgba(65, 30, 45, 0.5);
+}
+
+.filter-tab.active {
+  color: #ffffff;
+  background: linear-gradient(135deg, #f08298 0%, #e85c78 100%);
+  border-color: transparent;
+  box-shadow: 0 4px 15px rgba(232, 92, 120, 0.3);
+}
+
+/* --- 10. 3D Tilt Card --- */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.tilt-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* --- 12. Swiper Carousel Enhancements & Active Foreground Layering --- */
+.projects-swiper {
+  width: 100%;
+  padding-top: 1.5rem;
+  padding-bottom: 3.5rem;
+  position: relative;
+}
+
+.swiper-slide {
+  height: auto;
+  position: relative;
+  z-index: 1 !important;
+  opacity: 0.55;
+  transform: scale(0.92);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), z-index 0.3s ease;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/* Adjacent non-active slides */
+.swiper-slide-prev,
+.swiper-slide-next {
+  z-index: 5 !important;
+  opacity: 0.65;
+}
+
+/* Active slide is ALWAYS elevated to the absolute foreground */
+.swiper-slide-active {
+  z-index: 30 !important;
+  opacity: 1 !important;
+  transform: scale(1) !important;
+  pointer-events: auto;
+  cursor: default;
+}
+
+/* Non-active cards cannot cover the active slide even on hover */
+.swiper-slide:not(.swiper-slide-active):hover {
+  z-index: 10 !important;
+  opacity: 0.85;
+}
+
+.swiper-slide-active:hover {
+  z-index: 35 !important;
+}
+
+/* Crisp solidity and prominent depth for active project card */
+.swiper-slide-active .glass-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(248, 114, 139, 0.45);
+  box-shadow: 0 20px 45px -15px rgba(232, 92, 120, 0.25), 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+}
+
+html.dark .swiper-slide-active .glass-card {
+  background: rgba(26, 19, 26, 0.95);
+  border-color: rgba(248, 114, 139, 0.35);
+  box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.7);
+}
+
+.swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  background: var(--text-muted);
+  opacity: 0.35;
+  transition: all 0.3s ease;
+  border-radius: 9999px;
+}
+
+.swiper-pagination-bullet-active {
+  width: 26px;
+  background: var(--color-pink);
+  opacity: 1;
+  box-shadow: 0 0 8px rgba(232, 92, 120, 0.4);
+}
+
+/* --- 13. Toast Notification System --- */
+#toast-container {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1.25rem;
+  background: var(--bg-surface-elevated);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-pink-border);
+  border-radius: 1rem;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 10px 28px -4px rgba(232, 92, 120, 0.15);
+  transform: translateX(120%);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+}
+
+.toast.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* --- 14. Modal & Dialog Overlays --- */
+.modal-backdrop {
+  background: rgba(30, 15, 22, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(232, 92, 120, 0.25);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-pink);
+}
+
+/* ==========================================================================
+   15. INTERACTIVE HANGING ID BADGE & LANYARD SYSTEM
+   ========================================================================== */
+#hanging-id-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 35;
+  overflow: visible;
+}
+
+#lanyard-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 34;
+  overflow: visible;
+}
+
+#lanyard-anchor-mount {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 36;
+}
+
+#hanging-badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 320px;
+  transform-origin: 50% 0px;
+  cursor: grab;
+  cursor: -webkit-grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: auto;
+  z-index: 37;
+  transform-style: preserve-3d;
+  transition: filter 0.2s ease;
+}
+
+#hanging-badge:hover {
+  filter: drop-shadow(0 20px 32px rgba(232, 92, 120, 0.25));
+}
+
+#hanging-badge:active,
+#hanging-badge.is-dragging {
+  cursor: grabbing;
+  cursor: -webkit-grabbing;
+}
+
+/* Metal Clip & Swivel Clasp */
+.id-clip-assembly {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: -4px;
+  z-index: 40;
+}
+
+.id-metal-clasp {
+  width: 18px;
+  height: 26px;
+  background: linear-gradient(135deg, #ffffff 0%, #e2d9dd 45%, #d1c5ca 65%, #b5a3ab 100%);
+  border-radius: 4px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.id-metal-ring {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 3.5px solid #d1c5ca;
+  background: radial-gradient(circle, transparent 45%, #e2d9dd 100%);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12), inset 0 1px 2px rgba(0, 0, 0, 0.2);
+  margin-top: -8px;
+  position: relative;
+  z-index: 41;
+}
+
+/* Acrylic Badge Protective Sleeve */
+.id-acrylic-holder {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  border-radius: 1.5rem;
+  padding: 10px;
+  box-shadow: 0 24px 50px -12px rgba(232, 92, 120, 0.18),
+              0 0 24px rgba(254, 205, 218, 0.35),
+              inset 0 1px 3px rgba(255, 255, 255, 0.9);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+html.dark .id-acrylic-holder {
+  background: rgba(38, 24, 34, 0.75);
+  border: 2px solid rgba(248, 114, 139, 0.4);
+  box-shadow: 0 28px 60px -15px rgba(0, 0, 0, 0.8),
+              0 0 35px rgba(232, 92, 120, 0.2);
+}
+
+/* Punch hole slot at top of acrylic case */
+.id-slot-hole {
+  width: 44px;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  margin: 1px auto 8px auto;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* Dynamic Glass Glare & Light Sheen */
+.id-glare-overlay {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.6) 0%,
+    rgba(255, 255, 255, 0.15) 35%,
+    rgba(255, 255, 255, 0) 55%,
+    rgba(255, 255, 255, 0.3) 100%
+  );
+  transition: opacity 0.2s ease;
+}
+
+/* Physical ID Card Surface Inside */
+.id-card-surface {
+  background: #ffffff;
+  color: #2d1822;
+  border-radius: 1.1rem;
+  border: 1px solid rgba(232, 92, 120, 0.18);
+  box-shadow: 0 6px 16px rgba(232, 92, 120, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+html.dark .id-card-surface {
+  background: linear-gradient(165deg, #241922 0%, #171016 100%);
+  color: #fdf2f5;
+  border: 1px solid rgba(248, 114, 139, 0.3);
+}
+
+/* Responsive ID Badge Sizing */
+@media (max-width: 1023px) {
+  #hanging-badge {
+    width: 285px;
+  }
+}
+
+@media (max-width: 639px) {
+  #hanging-badge {
+    width: 240px;
+  }
+}
+
+/* --- 16. Accessibility: Reduced Motion --- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  #cursor-glow {
+    display: none !important;
+  }
+  .ambient-pastel-orb-1,
+  .ambient-pastel-orb-2 {
+    animation: none !important;
+  }
+}
