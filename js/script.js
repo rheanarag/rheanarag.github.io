@@ -12,6 +12,124 @@ document.addEventListener('DOMContentLoaded', () => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // ==========================================================================
+    // 0. PORTFOLIO ID PRELOADER & RFID VERIFICATION SYSTEM
+    // ==========================================================================
+    const initPreloader = (onComplete) => {
+        const preloader = document.getElementById('portfolio-preloader');
+        if (!preloader) {
+            if (typeof onComplete === 'function') onComplete();
+            return;
+        }
+
+        const progressFill = document.getElementById('preloader-progress-fill');
+        const percentageText = document.getElementById('preloader-percentage');
+        const statusText = document.getElementById('preloader-status-text');
+        const statusDot = document.getElementById('preloader-status-dot');
+        const skipBtn = document.getElementById('preloader-skip-btn');
+        const loaderCard = document.getElementById('preloader-badge');
+        const loaderFlipper = document.getElementById('preloader-id-flipper');
+
+        // Lock scroll while preloader is visible
+        document.body.style.overflow = 'hidden';
+
+        // Manual flip interaction during loading screen
+        if (loaderCard && loaderFlipper) {
+            loaderCard.addEventListener('click', () => {
+                loaderFlipper.classList.toggle('is-flipped');
+            });
+        }
+
+        let isDone = false;
+        const startTime = performance.now();
+        const duration = prefersReducedMotion ? 500 : 2500;
+
+        let hasFlippedToBack = false;
+        let hasFlippedToFront = false;
+
+        const updateStatus = (pct) => {
+            if (pct < 25) {
+                if (statusText) statusText.textContent = 'INITIALIZING CREDENTIALS...';
+            } else if (pct < 45) {
+                if (statusText) statusText.textContent = 'SCANNING RFID SMART CHIP...';
+            } else if (pct < 72) {
+                if (statusText) statusText.textContent = 'VERIFYING PUP • CCIS RECORD...';
+            } else if (pct < 95) {
+                if (statusText) statusText.textContent = 'LOADING PORTFOLIO ASSETS...';
+            } else {
+                if (statusText) statusText.textContent = 'AUTHENTICATION COMPLETE • WELCOME';
+                if (statusDot) {
+                    statusDot.classList.remove('bg-pink-500', 'animate-ping');
+                    statusDot.classList.add('bg-emerald-500');
+                }
+            }
+        };
+
+        const finish = () => {
+            if (isDone) return;
+            isDone = true;
+
+            if (progressFill) progressFill.style.width = '100%';
+            if (percentageText) percentageText.textContent = '100%';
+            updateStatus(100);
+
+            setTimeout(() => {
+                preloader.classList.add('preloader-hidden');
+                document.body.style.overflow = '';
+
+                setTimeout(() => {
+                    if (preloader.parentNode) preloader.parentNode.removeChild(preloader);
+                }, 700);
+
+                if (typeof onComplete === 'function') onComplete();
+            }, prefersReducedMotion ? 80 : 350);
+        };
+
+        if (skipBtn) {
+            skipBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                finish();
+            });
+        }
+
+        const tick = (now) => {
+            if (isDone) return;
+
+            const elapsed = now - startTime;
+            const progressRatio = Math.min(1, elapsed / duration);
+            const pct = Math.floor(progressRatio * 100);
+
+            if (progressFill) progressFill.style.width = `${pct}%`;
+            if (percentageText) percentageText.textContent = `${pct}%`;
+            updateStatus(pct);
+
+            // Autonomous 3D card flip sequence during loading ("the whole id should be flip")
+            if (!prefersReducedMotion && loaderFlipper) {
+                // Flip to back at ~36% progress
+                if (pct >= 36 && pct < 72 && !hasFlippedToBack) {
+                    hasFlippedToBack = true;
+                    loaderFlipper.classList.add('is-flipped');
+                }
+                // Flip back to front at ~72% progress
+                if (pct >= 72 && !hasFlippedToFront) {
+                    hasFlippedToFront = true;
+                    loaderFlipper.classList.remove('is-flipped');
+                }
+            }
+
+            if (progressRatio < 1) {
+                requestAnimationFrame(tick);
+            } else {
+                finish();
+            }
+        };
+
+        requestAnimationFrame(tick);
+
+        // Fail-safe unlock after 3.8s maximum
+        setTimeout(finish, 3800);
+    };
+
+    // ==========================================================================
     // 1. TOAST NOTIFICATION SYSTEM
     // ==========================================================================
     const toastContainer = document.getElementById('toast-container');
@@ -798,28 +916,34 @@ Welcome to Rhea's digital matrix.
     // ==========================================================================
     // 12. GSAP ENTRANCE & SCROLLTRIGGER TIMELINES
     // ==========================================================================
-    if (typeof gsap !== 'undefined' && !prefersReducedMotion) {
-        const tl = gsap.timeline();
+    const startHeroEntrance = () => {
+        if (typeof gsap !== 'undefined' && !prefersReducedMotion) {
+            const tl = gsap.timeline();
 
-        // Hero Left Elements Entrance Stagger
-        tl.from('.gsap-hero-left > *', {
-            y: 30,
-            opacity: 0,
-            duration: 0.7,
-            stagger: 0.1,
-            ease: 'power3.out'
-        });
+            // Hero Left Elements Entrance Stagger
+            tl.from('.gsap-hero-left > *', {
+                y: 30,
+                opacity: 0,
+                duration: 0.7,
+                stagger: 0.1,
+                ease: 'power3.out'
+            });
 
-        // Hero 3D Card Area Reveal
-        tl.from('.gsap-hero-right', {
-            opacity: 0,
-            duration: 0.8,
-            ease: 'power2.out'
-        }, '-=0.5');
+            // Hero 3D Card Area Reveal
+            tl.from('.gsap-hero-right', {
+                opacity: 0,
+                duration: 0.8,
+                ease: 'power2.out'
+            }, '-=0.5');
+        }
+    };
 
-        // Scroll Reveals for Sections
-        if (typeof ScrollTrigger !== 'undefined') {
-            gsap.registerPlugin(ScrollTrigger);
+    // Initialize Preloader & chain to hero entrance
+    initPreloader(startHeroEntrance);
+
+    // Scroll Reveals for Sections
+    if (typeof ScrollTrigger !== 'undefined' && !prefersReducedMotion && typeof gsap !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
 
             gsap.utils.toArray('.gsap-fade-right').forEach(el => {
                 gsap.fromTo(el, { opacity: 0, x: -40 }, {
@@ -842,7 +966,6 @@ Welcome to Rhea's digital matrix.
                 });
             });
         }
-    }
 
     // ==========================================================================
     // 13. ACTIVE NAVBAR SCROLLSPY & FLOATING TOPBAR STATE
@@ -904,8 +1027,8 @@ Welcome to Rhea's digital matrix.
         const strapPath = document.getElementById('lanyard-strap-path');
         const seamPath = document.getElementById('lanyard-seam-path');
         const dragHint = document.getElementById('lanyard-drag-hint');
-        const glareOverlay = badge ? badge.querySelector('.id-glare-overlay') : null;
-        const hologramStrip = badge ? badge.querySelector('.id-hologram-strip') : null;
+        const glareOverlays = badge ? badge.querySelectorAll('.id-glare-overlay') : [];
+        const hologramStrips = badge ? badge.querySelectorAll('.id-hologram-strip') : [];
         const heroSection = document.getElementById('home');
 
         if (!container || !badge || !anchorMount || !strapPath || !heroSection) return;
@@ -1115,25 +1238,39 @@ Welcome to Rhea's digital matrix.
                 twistVel = -vx * 0.05;
                 twistVel = Math.max(-60, Math.min(60, twistVel));
             } else {
-                // Click / Tap triggered: Flip the card to show front or back!
+                // Click / Tap triggered: Flip the whole ID badge!
                 const duration = performance.now() - pointerStart.time;
-                if (duration < 450 && cardFlipper) {
-                    cardFlipper.classList.toggle('is-flipped');
-
-                    // Subtle playful impulse on flip
-                    omega += (cardFlipper.classList.contains('is-flipped') ? 0.35 : -0.35);
-                    twistVel += (cardFlipper.classList.contains('is-flipped') ? 22 : -22);
-
-                    if (!hasInteracted && dragHint) {
-                        hasInteracted = true;
-                        dragHint.style.opacity = '0';
-                        setTimeout(() => {
-                            if (dragHint && dragHint.parentNode) dragHint.remove();
-                        }, 600);
-                    }
+                if (duration < 450) {
+                    triggerBadgeFlip();
                 }
             }
         };
+
+        const triggerBadgeFlip = () => {
+            if (!cardFlipper) return;
+            cardFlipper.classList.toggle('is-flipped');
+
+            // Subtle playful physics impulse on flip
+            omega += (cardFlipper.classList.contains('is-flipped') ? 0.35 : -0.35);
+            twistVel += (cardFlipper.classList.contains('is-flipped') ? 24 : -24);
+
+            if (!hasInteracted && dragHint) {
+                hasInteracted = true;
+                dragHint.style.opacity = '0';
+                setTimeout(() => {
+                    if (dragHint && dragHint.parentNode) dragHint.remove();
+                }, 600);
+            }
+        };
+
+        // Attach direct click events on explicit flip affordances
+        const flipButtons = badge.querySelectorAll('.id-flip-btn');
+        flipButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                triggerBadgeFlip();
+            });
+        });
 
         // Attach pointer events to badge & fallback window
         badge.addEventListener('pointerdown', onPointerDown);
@@ -1279,14 +1416,18 @@ Welcome to Rhea's digital matrix.
             }
 
             // Glare & Hologram updates based on 3D rotation
-            if (glareOverlay) {
+            if (glareOverlays.length > 0) {
                 const glareAngle = 45 + twist * 2 + rotDeg * 0.7;
                 const glareOpacity = Math.max(0.12, Math.min(0.55, 0.28 + Math.abs(twist) * 0.012));
-                glareOverlay.style.background = `linear-gradient(${glareAngle}deg, rgba(255, 255, 255, ${glareOpacity}) 0%, transparent 60%)`;
+                glareOverlays.forEach(glare => {
+                    glare.style.background = `linear-gradient(${glareAngle}deg, rgba(255, 255, 255, ${glareOpacity}) 0%, transparent 60%)`;
+                });
             }
-            if (hologramStrip) {
+            if (hologramStrips.length > 0) {
                 const hueShift = Math.floor((twist * 6 + rotDeg * 2.5 + 360) % 360);
-                hologramStrip.style.filter = `hue-rotate(${hueShift}deg)`;
+                hologramStrips.forEach(holo => {
+                    holo.style.filter = `hue-rotate(${hueShift}deg)`;
+                });
             }
         };
 

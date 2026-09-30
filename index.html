@@ -66,6 +66,188 @@
     <!-- Toast Notification Container -->
     <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
 
+    <!-- ==================== PORTFOLIO ID PRELOADER SCREEN ==================== -->
+    <div id="portfolio-preloader" class="portfolio-preloader fixed inset-0 z-[10000] flex flex-col items-center justify-center select-none overflow-hidden" aria-label="Authenticating Student ID & Loading Portfolio">
+        <!-- Ambient Background Lighting & Atmospheric Gradients -->
+        <div class="preloader-backdrop absolute inset-0 bg-gradient-to-b from-[#fff5f8]/95 via-white/95 to-[#ffeef2]/95 dark:from-[#150f14]/98 dark:via-[#1c1219]/98 dark:to-[#120c11]/98 backdrop-blur-2xl"></div>
+        <div class="preloader-glow-orb absolute w-[340px] h-[340px] sm:w-[480px] sm:h-[480px] rounded-full bg-pink-300/25 dark:bg-pink-600/15 blur-3xl pointer-events-none animate-pulse"></div>
+
+        <!-- Centered ID Badge Loading Entity ("the loading should be from the id") -->
+        <div class="relative z-10 flex flex-col items-center max-w-sm w-full px-4">
+            
+            <!-- Hanging Lanyard Top Mount Fixture -->
+            <div class="flex flex-col items-center pointer-events-none mb-[-9px] z-20">
+                <div class="h-2.5 px-3 rounded-b-md bg-gradient-to-r from-pink-300 via-rose-200 to-pink-300 dark:from-pink-700 dark:via-rose-600 dark:to-pink-700 shadow-sm border-b border-x border-pink-400/40 flex items-center gap-1">
+                    <span class="w-1 h-1 rounded-full bg-pink-500/80"></span>
+                    <span class="w-6 h-0.5 bg-white/60 dark:bg-black/40 rounded-full"></span>
+                    <span class="w-1 h-1 rounded-full bg-pink-500/80"></span>
+                </div>
+                <div class="w-4 h-2 bg-gradient-to-b from-slate-300 to-slate-400 dark:from-slate-600 dark:to-slate-700 rounded-b shadow-xs"></div>
+                <div class="w-6 h-6 border-[3px] border-[#cbbecc] rounded-full mt-[-4px] shadow-sm bg-gradient-to-br from-slate-200/50 to-transparent"></div>
+            </div>
+
+            <!-- Preloader ID Badge Card with 3D Flip System ("the whole id should be flip") -->
+            <div id="preloader-badge" class="preloader-badge relative w-[270px] sm:w-[290px] cursor-pointer" title="Click to flip ID badge">
+                
+                <!-- WHOLE ID FLIPPER -->
+                <div id="preloader-id-flipper" class="id-card-flipper relative w-full">
+                    
+                    <!-- FRONT FACE OF PRELOADER ID BADGE -->
+                    <div class="id-card-face id-card-front id-acrylic-holder relative rounded-3xl p-2.5 sm:p-3 shadow-2xl backdrop-blur-md flex flex-col">
+                        <!-- Top Slot Hole -->
+                        <div class="id-slot-hole"></div>
+
+                        <!-- Glass Reflection Sheen Overlay -->
+                        <div class="id-glare-overlay absolute inset-0 rounded-3xl pointer-events-none overflow-hidden z-20"></div>
+
+                        <!-- Holographic RFID Laser Scanner Beam Animation -->
+                        <div class="id-scanner-beam"></div>
+
+                        <!-- Front ID Card Surface -->
+                        <div class="id-card-surface rounded-2xl overflow-hidden p-3 sm:p-3.5 flex flex-col justify-between relative shadow-md">
+                            <!-- Header: University branding & RFID chip icon -->
+                            <div class="flex items-center justify-between pb-2 border-b border-pink-100 dark:border-white/10">
+                                <div class="flex items-center gap-1.5">
+                                    <img src="images/pup.png" alt="PUP" class="w-4 h-4 sm:w-5 sm:h-5 object-contain" onerror="this.style.display='none'">
+                                    <span class="font-mono font-bold text-[8px] sm:text-[9px] text-pink-700 dark:text-pink-300 uppercase tracking-wider">PUP • CCIS</span>
+                                </div>
+                                <div class="flex items-center gap-1 text-pink-400 dark:text-pink-400" title="Contactless Smart Card">
+                                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" d="M8.5 16.5a5 5 0 0 1 0-9"/>
+                                        <path stroke-linecap="round" d="M12 19a8.5 8.5 0 0 1 0-14"/>
+                                        <path stroke-linecap="round" d="M15.5 21.5a12 12 0 0 1 0-19"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <!-- Portrait Photo with Status Pill -->
+                            <div class="relative w-full aspect-[4/4.2] rounded-xl sm:rounded-2xl overflow-hidden bg-pink-50 shadow-xs border border-pink-100 dark:border-pink-500/20 my-2">
+                                <img src="images/rhea-about.jpg" alt="Rhea Mae Narag" class="w-full h-full object-cover object-center pointer-events-none select-none" draggable="false" onerror="this.src='images/rhea-photo.jpg'">
+                                <div class="absolute bottom-1.5 left-1.5 px-2 py-0.5 rounded-full bg-white/95 dark:bg-slate-900/95 text-pink-700 dark:text-pink-300 font-mono text-[8px] sm:text-[9px] font-bold border border-pink-200 dark:border-pink-500/30 shadow-xs flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    <span>AUTHENTICATING</span>
+                                </div>
+                            </div>
+
+                            <!-- Personal Name & Role -->
+                            <div class="flex flex-col items-center justify-center text-center">
+                                <h3 class="font-serif italic font-bold text-lg sm:text-xl text-pink-600 dark:text-pink-400 tracking-wide leading-tight">
+                                    Rhea Mae Narag
+                                </h3>
+                                <span class="text-[9px] sm:text-[10px] font-mono text-slate-700 dark:text-slate-300 font-semibold mt-0.5">
+                                    Frontend Dev &amp; UI/UX
+                                </span>
+                            </div>
+
+                            <!-- Hologram Security Foil -->
+                            <div class="id-hologram-strip relative w-full h-3 rounded overflow-hidden my-1 shadow-2xs border border-pink-200/60 dark:border-white/10">
+                                <div class="absolute inset-0 bg-gradient-to-r from-pink-300 via-purple-300 via-cyan-200 via-amber-200 to-pink-300 opacity-70"></div>
+                                <div class="absolute inset-0 flex items-center justify-between px-2 text-[6.5px] font-mono font-bold tracking-widest text-slate-800/80">
+                                    <span>★ STUDENT ID ★</span>
+                                    <span>PRESIDENT'S LISTER</span>
+                                </div>
+                            </div>
+
+                            <!-- Bottom ID Number & Flip Notice -->
+                            <div class="flex items-center justify-between text-[8px] sm:text-[9px] font-mono text-slate-400 dark:text-slate-500 pt-1 border-t border-pink-100 dark:border-white/10">
+                                <span>2024-01420-MN-0</span>
+                                <span class="text-pink-500 font-medium flex items-center gap-0.5">Verifying... ↻</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BACK FACE OF PRELOADER ID BADGE (NO SIGNATURE) -->
+                    <div class="id-card-face id-card-back id-acrylic-holder rounded-3xl p-2.5 sm:p-3 shadow-2xl backdrop-blur-md flex flex-col">
+                        <!-- Top Slot Hole -->
+                        <div class="id-slot-hole"></div>
+
+                        <!-- Glass Reflection Sheen Overlay -->
+                        <div class="id-glare-overlay absolute inset-0 rounded-3xl pointer-events-none overflow-hidden z-20"></div>
+
+                        <!-- Holographic RFID Laser Scanner Beam Animation -->
+                        <div class="id-scanner-beam"></div>
+
+                        <!-- Back ID Card Surface -->
+                        <div class="id-card-surface rounded-2xl overflow-hidden p-3 sm:p-3.5 flex flex-col justify-between shadow-md flex-1">
+                            <div>
+                                <!-- Magnetic Stripe -->
+                                <div class="w-full h-5 sm:h-6 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-950 rounded-md mb-2 shadow-inner flex items-center justify-end px-2">
+                                    <span class="font-mono text-[6.5px] text-pink-300/80 tracking-widest">MAG-STRIPE // ENCRYPTED</span>
+                                </div>
+
+                                <div class="flex items-center justify-between border-b border-pink-100 dark:border-white/10 pb-1 mb-1.5">
+                                    <div class="flex items-center gap-1">
+                                        <img src="images/pup.png" alt="PUP" class="w-3.5 h-3.5 object-contain" onerror="this.style.display='none'">
+                                        <span class="font-mono font-bold text-[8.5px] text-pink-700 dark:text-pink-300 uppercase tracking-wide">STUDENT CREDENTIALS</span>
+                                    </div>
+                                    <span class="text-[7.5px] font-mono px-1.5 py-0.5 rounded-full bg-pink-100 dark:bg-pink-950/60 text-pink-700 dark:text-pink-300 font-bold border border-pink-200 dark:border-pink-800/50">2024–2028</span>
+                                </div>
+
+                                <div class="space-y-1 text-[9.5px] sm:text-[10px]">
+                                    <div class="flex justify-between text-slate-600 dark:text-slate-300">
+                                        <span class="text-slate-400 dark:text-slate-500">Program:</span>
+                                        <span class="font-semibold text-right">BS Information Tech</span>
+                                    </div>
+                                    <div class="flex justify-between text-slate-600 dark:text-slate-300">
+                                        <span class="text-slate-400 dark:text-slate-500">College:</span>
+                                        <span class="font-semibold text-right">CCIS • PUP Manila</span>
+                                    </div>
+                                    <div class="flex justify-between text-slate-600 dark:text-slate-300">
+                                        <span class="text-slate-400 dark:text-slate-500">Distinctions:</span>
+                                        <span class="font-semibold text-right text-pink-600 dark:text-pink-400">President's Lister</span>
+                                    </div>
+                                    <div class="flex justify-between text-slate-600 dark:text-slate-300">
+                                        <span class="text-slate-400 dark:text-slate-500">Scholarship:</span>
+                                        <span class="font-semibold text-right text-pink-600 dark:text-pink-400">Security Bank (SBFI)</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Barcode Area (Signature removed as requested) -->
+                            <div class="pt-1.5 border-t border-pink-100 dark:border-white/10 flex flex-col items-center">
+                                <svg class="w-full h-4 text-slate-800 dark:text-slate-200" viewBox="0 0 200 20" fill="currentColor">
+                                    <rect x="0" y="0" width="3" height="20"/><rect x="5" y="0" width="1.5" height="20"/><rect x="9" y="0" width="4" height="20"/><rect x="15" y="0" width="2" height="20"/><rect x="19" y="0" width="1" height="20"/><rect x="23" y="0" width="3" height="20"/><rect x="28" y="0" width="5" height="20"/><rect x="35" y="0" width="2" height="20"/><rect x="39" y="0" width="1.5" height="20"/><rect x="43" y="0" width="4" height="20"/><rect x="49" y="0" width="2" height="20"/><rect x="54" y="0" width="6" height="20"/><rect x="62" y="0" width="1.5" height="20"/><rect x="66" y="0" width="3.5" height="20"/><rect x="72" y="0" width="2" height="20"/><rect x="76" y="0" width="5" height="20"/><rect x="83" y="0" width="1.5" height="20"/><rect x="87" y="0" width="3" height="20"/><rect x="92" y="0" width="4.5" height="20"/><rect x="99" y="0" width="2" height="20"/><rect x="103" y="0" width="1.5" height="20"/><rect x="107" y="0" width="5" height="20"/><rect x="114" y="0" width="2" height="20"/><rect x="118" y="0" width="3" height="20"/><rect x="123" y="0" width="1.5" height="20"/><rect x="127" y="0" width="4" height="20"/><rect x="133" y="0" width="2" height="20"/><rect x="137" y="0" width="6" height="20"/><rect x="145" y="0" width="2" height="20"/><rect x="149" y="0" width="3.5" height="20"/><rect x="155" y="0" width="1.5" height="20"/><rect x="159" y="0" width="4" height="20"/><rect x="165" y="0" width="2" height="20"/>
+                                </svg>
+                                <div class="flex items-center justify-between w-full mt-1 text-[6.5px] font-mono text-slate-400">
+                                    <span>RFID: ENCRYPTED</span>
+                                    <span class="text-emerald-500 font-semibold flex items-center gap-0.5">
+                                        <span class="w-1 h-1 rounded-full bg-emerald-500"></span> VERIFIED
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Preloader Progress & Authentication Status Panel -->
+            <div class="w-full mt-5 sm:mt-6 flex flex-col items-center text-center space-y-2.5">
+                <!-- Status Badge Pill -->
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-100/80 dark:bg-pink-950/70 border border-pink-200 dark:border-pink-800/60 shadow-xs">
+                    <span id="preloader-status-dot" class="w-2 h-2 rounded-full bg-pink-500 animate-ping"></span>
+                    <span id="preloader-status-text" class="text-[10px] sm:text-[11px] font-mono font-bold tracking-widest text-pink-700 dark:text-pink-300 uppercase">
+                        INITIALIZING CREDENTIALS...
+                    </span>
+                </div>
+
+                <!-- Progress Bar Track & Fill -->
+                <div class="w-64 sm:w-72 h-2 rounded-full bg-pink-100/90 dark:bg-white/10 p-[1.5px] border border-pink-200/70 dark:border-white/10 overflow-hidden shadow-inner relative">
+                    <div id="preloader-progress-fill" class="h-full rounded-full bg-gradient-to-r from-pink-300 via-rose-400 to-pink-500 shadow-[0_0_12px_rgba(232,92,120,0.6)] transition-all duration-100 ease-out" style="width: 0%;"></div>
+                </div>
+
+                <!-- Percentage Counter & Skip Affordance -->
+                <div class="flex items-center justify-between w-64 sm:w-72 text-[10px] font-mono text-slate-500 dark:text-slate-400 px-0.5">
+                    <span id="preloader-percentage" class="font-bold text-pink-600 dark:text-pink-400">0%</span>
+                    <button id="preloader-skip-btn" class="hover:text-pink-600 dark:hover:text-pink-300 transition-colors underline underline-offset-2 cursor-pointer" type="button">
+                        Skip Intro →
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     <!-- Ambient Aesthetic Pastel Background Canvas -->
     <div class="aesthetic-bg-canvas" aria-hidden="true"></div>
     <div class="aesthetic-bg-pattern" aria-hidden="true"></div>
@@ -415,20 +597,19 @@
                             <div class="id-metal-ring"></div>
                         </div>
 
-                        <!-- Acrylic Badge Outer Sleeve -->
-                        <div class="id-acrylic-holder relative rounded-3xl p-2.5 sm:p-3 shadow-xl backdrop-blur-md select-none">
-                            <!-- Top Slot Hole -->
-                            <div class="id-slot-hole"></div>
+                        <!-- 3D Card Flipper (The WHOLE ID Flips: Acrylic Holder + Sleeve + Card) -->
+                        <div id="id-card-flipper" class="id-card-flipper relative w-full cursor-pointer" title="Tap to flip badge">
+                            
+                            <!-- FRONT FACE: Whole Front Acrylic Badge -->
+                            <div class="id-card-face id-card-front id-acrylic-holder relative rounded-3xl p-2.5 sm:p-3 shadow-xl backdrop-blur-md select-none flex flex-col">
+                                <!-- Top Slot Hole -->
+                                <div class="id-slot-hole"></div>
 
-                            <!-- Glass Reflection Sheen Overlay -->
-                            <div class="id-glare-overlay absolute inset-0 rounded-3xl pointer-events-none overflow-hidden z-20"></div>
+                                <!-- Glass Reflection Sheen Overlay -->
+                                <div class="id-glare-overlay absolute inset-0 rounded-3xl pointer-events-none overflow-hidden z-20"></div>
 
-                            <!-- 3D Card Flipper (Rotates 180deg on tap/click) -->
-                            <div id="id-card-flipper" class="id-card-flipper">
-                                
-                                <!-- FRONT FACE OF ID BADGE -->
-                                <div class="id-card-face id-card-front id-card-surface rounded-2xl overflow-hidden p-3 sm:p-3.5 flex flex-col justify-between relative shadow-md">
-                                    
+                                <!-- Front ID Card Surface -->
+                                <div class="id-card-surface rounded-2xl overflow-hidden p-3 sm:p-3.5 flex flex-col justify-between relative shadow-md flex-1">
                                     <!-- Header: University branding & RFID chip icon -->
                                     <div class="flex items-center justify-between pb-2 border-b border-pink-100 dark:border-white/10">
                                         <div class="flex items-center gap-1.5">
@@ -475,12 +656,21 @@
                                     <!-- 4. Bottom ID Number & Flip Affordance -->
                                     <div class="flex items-center justify-between text-[9px] font-mono text-slate-400 dark:text-slate-500 pt-1 border-t border-pink-100 dark:border-white/10">
                                         <span>2024-01420-MN-0</span>
-                                        <span class="text-pink-500 font-medium hover:text-pink-600 flex items-center gap-0.5">Tap to flip ↻</span>
+                                        <span class="text-pink-500 font-medium hover:text-pink-600 flex items-center gap-0.5 id-flip-btn cursor-pointer">Tap to flip ↻</span>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- BACK FACE OF ID BADGE -->
-                                <div class="id-card-face id-card-back id-card-surface rounded-2xl overflow-hidden p-3 sm:p-3.5 flex flex-col justify-between shadow-md">
+                            <!-- BACK FACE: Whole Back Acrylic Badge (SIGNATURE REMOVED) -->
+                            <div class="id-card-face id-card-back id-acrylic-holder rounded-3xl p-2.5 sm:p-3 shadow-xl backdrop-blur-md select-none flex flex-col">
+                                <!-- Top Slot Hole -->
+                                <div class="id-slot-hole"></div>
+
+                                <!-- Glass Reflection Sheen Overlay -->
+                                <div class="id-glare-overlay absolute inset-0 rounded-3xl pointer-events-none overflow-hidden z-20"></div>
+
+                                <!-- Back ID Card Surface -->
+                                <div class="id-card-surface rounded-2xl overflow-hidden p-3 sm:p-3.5 flex flex-col justify-between shadow-md flex-1">
                                     <div>
                                         <!-- Magnetic Stripe -->
                                         <div class="w-full h-6 sm:h-7 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-950 rounded-md mb-2.5 shadow-inner flex items-center justify-end px-2">
@@ -495,7 +685,7 @@
                                             <span class="text-[8px] font-mono px-1.5 py-0.5 rounded-full bg-pink-100 dark:bg-pink-950/60 text-pink-700 dark:text-pink-300 font-bold border border-pink-200 dark:border-pink-800/50">2024–2028</span>
                                         </div>
 
-                                        <div class="space-y-1 text-[10px] sm:text-[11px]">
+                                        <div class="space-y-1.5 text-[10px] sm:text-[11px]">
                                             <div class="flex justify-between text-slate-600 dark:text-slate-300">
                                                 <span class="text-slate-400 dark:text-slate-500">Program:</span>
                                                 <span class="font-semibold text-right">BS Information Tech</span>
@@ -513,64 +703,22 @@
                                                 <span class="font-semibold text-right text-pink-600 dark:text-pink-400">Security Bank (SBFI)</span>
                                             </div>
                                         </div>
-
-                                        <!-- Cardholder Signature -->
-                                        <div class="mt-2.5 pt-1.5 border-t border-pink-100 dark:border-white/10 flex items-center justify-between">
-                                            <span class="text-[8px] font-mono text-slate-400">Signature:</span>
-                                            <span class="font-handwriting text-sm sm:text-base text-pink-600 dark:text-pink-400">Rhea Mae Narag</span>
-                                        </div>
                                     </div>
 
-                                    <!-- Bottom Barcode & Verification -->
-                                    <div class="pt-1.5 border-t border-pink-100 dark:border-white/10 flex flex-col items-center">
+                                    <!-- Bottom Barcode & Verification (Signature completely removed as requested) -->
+                                    <div class="pt-2 border-t border-pink-100 dark:border-white/10 flex flex-col items-center">
                                         <!-- Realistic SVG Barcode Pattern -->
                                         <svg class="w-full h-5 text-slate-800 dark:text-slate-200" viewBox="0 0 200 20" fill="currentColor">
-                                            <rect x="0" y="0" width="3" height="20"/>
-                                            <rect x="5" y="0" width="1.5" height="20"/>
-                                            <rect x="9" y="0" width="4" height="20"/>
-                                            <rect x="15" y="0" width="2" height="20"/>
-                                            <rect x="19" y="0" width="1" height="20"/>
-                                            <rect x="23" y="0" width="3" height="20"/>
-                                            <rect x="28" y="0" width="5" height="20"/>
-                                            <rect x="35" y="0" width="2" height="20"/>
-                                            <rect x="39" y="0" width="1.5" height="20"/>
-                                            <rect x="43" y="0" width="4" height="20"/>
-                                            <rect x="49" y="0" width="2" height="20"/>
-                                            <rect x="54" y="0" width="6" height="20"/>
-                                            <rect x="62" y="0" width="1.5" height="20"/>
-                                            <rect x="66" y="0" width="3.5" height="20"/>
-                                            <rect x="72" y="0" width="2" height="20"/>
-                                            <rect x="76" y="0" width="5" height="20"/>
-                                            <rect x="83" y="0" width="1.5" height="20"/>
-                                            <rect x="87" y="0" width="3" height="20"/>
-                                            <rect x="92" y="0" width="4.5" height="20"/>
-                                            <rect x="99" y="0" width="2" height="20"/>
-                                            <rect x="103" y="0" width="1.5" height="20"/>
-                                            <rect x="107" y="0" width="5" height="20"/>
-                                            <rect x="114" y="0" width="2" height="20"/>
-                                            <rect x="118" y="0" width="3" height="20"/>
-                                            <rect x="123" y="0" width="1.5" height="20"/>
-                                            <rect x="127" y="0" width="4" height="20"/>
-                                            <rect x="133" y="0" width="2" height="20"/>
-                                            <rect x="137" y="0" width="6" height="20"/>
-                                            <rect x="145" y="0" width="2" height="20"/>
-                                            <rect x="149" y="0" width="3.5" height="20"/>
-                                            <rect x="155" y="0" width="1.5" height="20"/>
-                                            <rect x="159" y="0" width="4" height="20"/>
-                                            <rect x="165" y="0" width="2" height="20"/>
-                                            <rect x="169" y="0" width="5" height="20"/>
-                                            <rect x="176" y="0" width="1.5" height="20"/>
-                                            <rect x="180" y="0" width="4" height="20"/>
-                                            <rect x="186" y="0" width="2" height="20"/>
-                                            <rect x="190" y="0" width="3" height="20"/>
-                                            <rect x="195" y="0" width="5" height="20"/>
+                                            <rect x="0" y="0" width="3" height="20"/><rect x="5" y="0" width="1.5" height="20"/><rect x="9" y="0" width="4" height="20"/><rect x="15" y="0" width="2" height="20"/><rect x="19" y="0" width="1" height="20"/><rect x="23" y="0" width="3" height="20"/><rect x="28" y="0" width="5" height="20"/><rect x="35" y="0" width="2" height="20"/><rect x="39" y="0" width="1.5" height="20"/><rect x="43" y="0" width="4" height="20"/><rect x="49" y="0" width="2" height="20"/><rect x="54" y="0" width="6" height="20"/><rect x="62" y="0" width="1.5" height="20"/><rect x="66" y="0" width="3.5" height="20"/><rect x="72" y="0" width="2" height="20"/><rect x="76" y="0" width="5" height="20"/><rect x="83" y="0" width="1.5" height="20"/><rect x="87" y="0" width="3" height="20"/><rect x="92" y="0" width="4.5" height="20"/><rect x="99" y="0" width="2" height="20"/><rect x="103" y="0" width="1.5" height="20"/><rect x="107" y="0" width="5" height="20"/><rect x="114" y="0" width="2" height="20"/><rect x="118" y="0" width="3" height="20"/><rect x="123" y="0" width="1.5" height="20"/><rect x="127" y="0" width="4" height="20"/><rect x="133" y="0" width="2" height="20"/><rect x="137" y="0" width="6" height="20"/><rect x="145" y="0" width="2" height="20"/><rect x="149" y="0" width="3.5" height="20"/><rect x="155" y="0" width="1.5" height="20"/><rect x="159" y="0" width="4" height="20"/><rect x="165" y="0" width="2" height="20"/><rect x="169" y="0" width="5" height="20"/><rect x="176" y="0" width="1.5" height="20"/><rect x="180" y="0" width="4" height="20"/><rect x="186" y="0" width="2" height="20"/><rect x="190" y="0" width="3" height="20"/><rect x="195" y="0" width="5" height="20"/>
                                         </svg>
-                                        <span class="font-mono text-[8px] text-slate-400 mt-0.5">VALIDATED ID: 2024-01420-MN-0</span>
-                                        <span class="text-[8px] font-mono text-pink-500 font-semibold mt-0.5 flex items-center gap-1">Tap to view front ↻</span>
+                                        <div class="flex items-center justify-between w-full mt-1.5 text-[8px] font-mono text-slate-400">
+                                            <span>2024-01420-MN-0</span>
+                                            <span class="text-pink-500 font-semibold hover:text-pink-600 flex items-center gap-1 id-flip-btn cursor-pointer">Tap to view front ↻</span>
+                                        </div>
                                     </div>
                                 </div>
-
                             </div>
+
                         </div>
                     </div>
                 </div>
